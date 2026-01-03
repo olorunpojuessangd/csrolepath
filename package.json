@@ -1,6 +1,6 @@
 
   {
-      "name": "CS RolePath",
+    "name": "cs-rolepath",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
