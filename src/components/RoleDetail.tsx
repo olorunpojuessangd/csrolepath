@@ -42,8 +42,16 @@ export default function RoleDetail() {
             <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm mb-3">
               {role.category}
             </span>
-            <h1 className="text-4xl mb-2 text-gray-900">{role.title}</h1>
-            <p className="text-xl text-gray-700">{role.description}</p>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <h1 className="text-4xl text-gray-900">{role.title}</h1>
+              <button
+                type="button"
+                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition-colors"
+              >
+                Apply
+              </button>
+            </div>
+            <p className="text-xl text-gray-700 mt-2">{role.description}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
