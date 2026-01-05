@@ -51,7 +51,7 @@ export default function RoleDetail() {
                 Apply
               </button>
             </div>
-            <p className="text-xl text-gray-700 mt-2">{role.description}</p>
+            <p className="text-xl text-gray-700 mt-4">{role.description}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-4 pt-4 border-t border-gray-200">
