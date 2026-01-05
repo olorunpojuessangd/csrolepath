@@ -42,11 +42,11 @@ export default function RoleDetail() {
             <span className="inline-block px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm mb-3">
               {role.category}
             </span>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <h1 className="text-4xl text-gray-900">{role.title}</h1>
+            <div className="grid grid-cols-2 items-start gap-4">
+              <h1 className="min-w-0 text-4xl text-gray-900">{role.title}</h1>
               <button
                 type="button"
-                className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 transition-colors"
+                className="inline-flex items-center justify-center justify-self-end rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 transition-colors"
               >
                 Apply
               </button>
