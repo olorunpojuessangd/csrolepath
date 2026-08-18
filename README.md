@@ -1,7 +1,7 @@
 # CS RolePath : Redesigning Student Labor Ecosystems
 
 **[🔗 Read the Full UX/Product Case Study Here](https://sites.google.com/view/olorunpojuessangd335/final-blog-post)**  
-**[🚀 Interact with the Live Application Here](#)** *(coming soon)*
+**[🚀 Interact with the Live Application Here](https://csrolepath.vercel.app/)**  
 
 ## 📌 Project Overview
 At Berea College, the student labor program is a core part of the educational experience, but navigating roles within the Computer Science department can be opaque. Students often lack the information needed to align their labor roles with their long-term career goals.
