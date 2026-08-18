@@ -51,25 +51,7 @@ To ensure this solution actually addressed student friction points, I conducted 
 * Personas & User Flows
 * Usability Testing Summaries
 
-<!-- ## Current State # commented out because i am unsure if it useful
 
-This repository contains:
-
-* A Vite-based frontend scaffold exported from Figma
-* Initial static layouts representing:
-
-  * Landing page
-  * Onboarding flow
-  * Role exploration
-  * Role detail views
-  * Role comparison
-  * Reflection modal
-
-At this stage:
-
-* The application is **not yet fully interactive**
-* Logic, state management, and data integration are still in progress
-* Usability testing has been conducted on the prototype to inform future iterations -->
 
 ---
 
