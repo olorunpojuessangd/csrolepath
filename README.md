@@ -1,7 +1,7 @@
 # CS RolePath : Redesigning Student Labor Ecosystems
 
 **[🔗 Read the Full UX/Product Case Study Here](https://sites.google.com/view/olorunpojuessangd335/final-blog-post)**  
-**[🚀 Interact with the Live Application Here](#)** *(Note: We will add the link here in Step 2)*
+**[🚀 Interact with the Live Application Here](#)** *(coming soon)*
 
 ## 📌 Project Overview
 At Berea College, the student labor program is a core part of the educational experience, but navigating roles within the Computer Science department can be opaque. Students often lack the information needed to align their labor roles with their long-term career goals.
@@ -51,7 +51,7 @@ To ensure this solution actually addressed student friction points, I conducted 
 * Personas & User Flows
 * Usability Testing Summaries
 
-## Current State
+<!-- ## Current State # commented out because i am unsure if it useful
 
 This repository contains:
 
@@ -69,7 +69,7 @@ At this stage:
 
 * The application is **not yet fully interactive**
 * Logic, state management, and data integration are still in progress
-* Usability testing has been conducted on the prototype to inform future iterations
+* Usability testing has been conducted on the prototype to inform future iterations -->
 
 ---
 
