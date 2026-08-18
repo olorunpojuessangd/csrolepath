@@ -48,7 +48,7 @@ export default function RoleDetail() {
                 type="button"
                 className="inline-flex items-center justify-center justify-self-end rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 transition-colors"
               >
-                Apply
+                Apply (coming soon)
               </button>
             </div>
             <p className="text-xl text-gray-700 mt-4">{role.description}</p>

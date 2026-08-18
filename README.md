@@ -1,6 +1,12 @@
-# CS RolePath
+# CS RolePath : Redesigning Student Labor Ecosystems
 
-**CS RolePath** is a prototype application designed to increase transparency around Computer Science labor roles at Berea College. The project explores how clear, structured information about role expectations, prerequisites, and progression can help students make more informed decisions—without relying on informal insider knowledge.
+**[🔗 Read the Full UX/Product Case Study Here](https://sites.google.com/view/olorunpojuessangd335/final-blog-post)**  
+**[🚀 Interact with the Live Application Here](#)** *(Note: We will add the link here in Step 2)*
+
+## 📌 Project Overview
+At Berea College, the student labor program is a core part of the educational experience, but navigating roles within the Computer Science department can be opaque. Students often lack the information needed to align their labor roles with their long-term career goals.
+
+**CS RolePath** is a human-centered computing project designed to make these labor pathways clearer, more equitable, and directly aligned with academic trajectories.
 
 This repository represents an early-stage implementation scaffold exported from Figma and is under active development.
 
@@ -37,6 +43,14 @@ The prototype focuses on four core ideas:
 
 ---
 
+## 🧠 The Research & Design Process
+To ensure this solution actually addressed student friction points, I conducted extensive foundational UX research. You can view the comprehensive breakdowns in my **[Google Sites Case Study](https://sites.google.com/view/olorunpojuessangd335/final-blog-post)**, which includes:
+* Competitive Analysis
+* Stakeholder Mapping
+* User Research Plans & Insights
+* Personas & User Flows
+* Usability Testing Summaries
+
 ## Current State
 
 This repository contains:
@@ -59,19 +73,6 @@ At this stage:
 
 ---
 
-## Usability Testing
-
-Initial usability tests were conducted with Berea College students using think-aloud walkthroughs. Early findings suggest:
-
-* The onboarding flow is intuitive and aligns with students’ mental models
-* Role detail and comparison views support understanding and decision-making
-* Opportunities exist to improve action clarity (e.g., next steps, apply pathways)
-* Users expect stronger affordances around clickability and continuity
-
-Further testing is planned as development continues.
-
----
-
 ## Tech Stack (Current)
 
 * Vite
@@ -84,10 +85,10 @@ This stack reflects the initial export and will evolve as functionality is imple
 
 ## Running the Project Locally
 
-```bash
-npm install
-npm run dev
-```
+1. Clone the repository: `git clone https://github.com/olorunpojuessangd/csrolepath.git`
+2. Navigate to the directory: `cd csrolepath`
+3. Install dependencies: `npm install` *(change this depending on your language)*
+4. Run the app: `npm start` *(change this depending on your language)*
 
 ---
 
@@ -102,12 +103,5 @@ Planned next steps include:
 * Iterating on the interface based on feedback
 * Preparing the application for deployment
 
-Development will continue over the winter term.
+Development is actively continuing as an independent, open-source project.
 
----
-
-## Status
-
-This project is an **exploratory prototype** developed as part of a Human-Centered Computing / Design course at Berea College. It prioritizes clarity, equity, and student agency over completeness or polish.
-
-Perfection is not the goal—iteration is.
