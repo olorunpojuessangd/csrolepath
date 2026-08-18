@@ -10,9 +10,11 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-
     "strict": true,
-    "types": ["vite/client"]
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src"]
+  "include": ["src/App.tsx", "src/main.tsx", "src/routes.ts", "src/components/*.tsx", "src/data/*.ts"]
 }
