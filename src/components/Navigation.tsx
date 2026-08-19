@@ -18,50 +18,50 @@ export default function Navigation({ savedCount = 0, onOpenSavedDrawer }: Naviga
 
   return (
     <>
-      {/* DESKTOP TOP NAVBAR (hidden on mobile, visible sm and up) */}
-      <header className="hidden sm:block sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between gap-4">
-          {/* Left Column: Brand Logo */}
+      {/* DESKTOP TOP NAVBAR */}
+      <header className="hidden sm:block sticky top-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#D0D5DD]">
+        <div className="max-w-[1120px] mx-auto px-6 h-14 flex items-center justify-between gap-4">
+          {/* Left: Brand */}
           <div className="flex-1 flex items-center justify-start">
-            <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-xs">
+            <Link to="/" className="flex items-center gap-2 group">
+              <div className="w-7 h-7 rounded-[6px] bg-[#4F46E5] text-white flex items-center justify-center shadow-xs">
                 <Sparkles className="w-4 h-4" />
               </div>
               <div className="flex flex-col">
-                <span className="font-bold text-slate-900 text-sm leading-tight tracking-tight">CS RolePath</span>
-                <span className="text-[10px] font-semibold text-slate-500 tracking-wide uppercase">Berea Student Labor</span>
+                <span className="font-semibold text-[#0A0E14] text-sm leading-none tracking-tight">CS RolePath</span>
+                <span className="text-[10px] font-normal text-[#6B7280] tracking-wide uppercase mt-0.5">Berea Student Labor</span>
               </div>
             </Link>
           </div>
 
-          {/* Center Column: Desktop Nav Links (Guaranteed True Center) */}
+          {/* Center: Nav links */}
           <nav className="flex-none flex items-center gap-1 text-sm font-medium">
             <Link
               to="/"
-              className={`px-3.5 py-2 rounded-xl transition-all ${
+              className={`px-3 py-1.5 rounded-[6px] transition-colors ${
                 pathname === '/'
-                  ? 'text-slate-900 font-semibold bg-slate-100/80'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'text-[#0A0E14] font-semibold bg-[#F3F4F6]'
+                  : 'text-[#3D4451] hover:text-[#0A0E14] hover:bg-[#F3F4F6]'
               }`}
             >
               Home
             </Link>
             <Link
               to="/explore"
-              className={`px-3.5 py-2 rounded-xl transition-all ${
+              className={`px-3 py-1.5 rounded-[6px] transition-colors ${
                 pathname.startsWith('/explore') || pathname.startsWith('/role')
-                  ? 'text-blue-600 font-semibold bg-blue-50/80'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'text-[#4F46E5] font-semibold bg-[#EEF0FF]'
+                  : 'text-[#3D4451] hover:text-[#0A0E14] hover:bg-[#F3F4F6]'
               }`}
             >
               Explore Roles
             </Link>
             <Link
               to="/compare"
-              className={`px-3.5 py-2 rounded-xl transition-all ${
+              className={`px-3 py-1.5 rounded-[6px] transition-colors ${
                 pathname.startsWith('/compare')
-                  ? 'text-blue-600 font-semibold bg-blue-50/80'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'text-[#4F46E5] font-semibold bg-[#EEF0FF]'
+                  : 'text-[#3D4451] hover:text-[#0A0E14] hover:bg-[#F3F4F6]'
               }`}
             >
               Compare
@@ -70,26 +70,26 @@ export default function Navigation({ savedCount = 0, onOpenSavedDrawer }: Naviga
               href="https://sites.google.com/view/olorunpojuessangd335/final-blog-post"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-3.5 py-2 text-slate-600 hover:text-slate-900 hover:bg-slate-50 rounded-xl transition-all flex items-center gap-1.5"
+              className="px-3 py-1.5 text-[#6B7280] hover:text-[#0A0E14] hover:bg-[#F3F4F6] rounded-[6px] transition-colors flex items-center gap-1.5"
             >
               <span>Case Study</span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+              <ExternalLink className="w-3.5 h-3.5 text-[#6B7280]" />
             </a>
           </nav>
 
-          {/* Right Column: Actions (Balances Left Column for Centering) */}
+          {/* Right: Actions */}
           <div className="flex-1 flex items-center justify-end gap-3">
             {onOpenSavedDrawer && (
               <button
                 type="button"
                 onClick={onOpenSavedDrawer}
-                className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs font-semibold transition-all active:scale-95 shadow-2xs ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-[6px] border text-xs font-medium transition-colors ${
                   savedCount > 0
-                    ? 'bg-blue-600 border-blue-600 text-white shadow-blue-500/20 hover:bg-blue-700'
-                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                    ? 'bg-[#EEF0FF] border-[#4F46E5] text-[#4F46E5]'
+                    : 'bg-[#FFFFFF] border-[#D0D5DD] text-[#3D4451] hover:bg-[#F3F4F6]'
                 }`}
               >
-                <BookmarkCheck className={`w-4 h-4 ${savedCount > 0 ? 'text-white' : 'text-slate-400'}`} />
+                <BookmarkCheck className={`w-3.5 h-3.5 ${savedCount > 0 ? 'text-[#4F46E5]' : 'text-[#6B7280]'}`} />
                 <span>My Saved Pathway ({savedCount})</span>
               </button>
             )}
@@ -97,65 +97,61 @@ export default function Navigation({ savedCount = 0, onOpenSavedDrawer }: Naviga
         </div>
       </header>
 
-      {/* MOBILE BOTTOM TAB BAR (visible only on mobile screens) */}
-      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200/90 flex items-center justify-around h-16 px-2 shadow-lg">
-        {/* Tab 1: Home */}
+      {/* MOBILE BOTTOM TAB BAR */}
+      <nav className="sm:hidden fixed bottom-0 inset-x-0 z-50 bg-[#FFFFFF]/95 backdrop-blur-md border-t border-[#D0D5DD] flex items-center justify-around h-14 px-2">
         <Link
           to="/"
-          className={`flex flex-col items-center justify-center flex-1 h-full gap-1 active:scale-90 transition-transform ${
-            isActive('/') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-slate-900'
+          className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 ${
+            isActive('/') ? 'text-[#4F46E5] font-medium' : 'text-[#6B7280]'
           }`}
         >
-          <Home className={`w-5 h-5 ${isActive('/') ? 'stroke-[2.25]' : 'stroke-[1.75]'}`} />
-          <span className="text-[10px] font-medium tracking-tight">Home</span>
+          <Home className="w-4 h-4" />
+          <span className="text-[10px] tracking-tight">Home</span>
         </Link>
 
-        {/* Tab 2: Explore */}
         <Link
           to="/explore"
-          className={`flex flex-col items-center justify-center flex-1 h-full gap-1 active:scale-90 transition-transform ${
-            isActive('/explore') || isActive('/role') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-slate-900'
+          className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 ${
+            isActive('/explore') || isActive('/role') ? 'text-[#4F46E5] font-medium' : 'text-[#6B7280]'
           }`}
         >
-          <Compass className={`w-5 h-5 ${isActive('/explore') || isActive('/role') ? 'stroke-[2.25]' : 'stroke-[1.75]'}`} />
-          <span className="text-[10px] font-medium tracking-tight">Explore</span>
+          <Compass className="w-4 h-4" />
+          <span className="text-[10px] tracking-tight">Explore</span>
         </Link>
 
-        {/* Tab 3: Compare */}
         <Link
           to="/compare"
-          className={`flex flex-col items-center justify-center flex-1 h-full gap-1 active:scale-90 transition-transform ${
-            isActive('/compare') ? 'text-blue-600 font-semibold' : 'text-slate-500 hover:text-slate-900'
+          className={`flex flex-col items-center justify-center flex-1 h-full gap-0.5 ${
+            isActive('/compare') ? 'text-[#4F46E5] font-medium' : 'text-[#6B7280]'
           }`}
         >
-          <Scale className={`w-5 h-5 ${isActive('/compare') ? 'stroke-[2.25]' : 'stroke-[1.75]'}`} />
-          <span className="text-[10px] font-medium tracking-tight">Compare</span>
+          <Scale className="w-4 h-4" />
+          <span className="text-[10px] tracking-tight">Compare</span>
         </Link>
 
-        {/* Tab 4: Saved Drawer */}
         {onOpenSavedDrawer ? (
           <button
             type="button"
             onClick={onOpenSavedDrawer}
-            className="flex flex-col items-center justify-center flex-1 h-full gap-1 text-slate-500 hover:text-blue-600 active:scale-90 transition-transform relative"
+            className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 text-[#6B7280] relative"
           >
             <div className="relative">
-              <BookmarkCheck className={`w-5 h-5 ${savedCount > 0 ? 'text-blue-600 stroke-[2.25]' : 'stroke-[1.75]'}`} />
+              <BookmarkCheck className={`w-4 h-4 ${savedCount > 0 ? 'text-[#4F46E5]' : ''}`} />
               {savedCount > 0 && (
-                <span className="absolute -top-1 -right-2 w-4 h-4 bg-blue-600 text-white rounded-full text-[9px] font-extrabold flex items-center justify-center shadow-xs">
+                <span className="absolute -top-1 -right-2 w-3.5 h-3.5 bg-[#4F46E5] text-white rounded-full text-[8px] font-semibold flex items-center justify-center">
                   {savedCount}
                 </span>
               )}
             </div>
-            <span className={`text-[10px] font-medium tracking-tight ${savedCount > 0 ? 'text-blue-600 font-semibold' : ''}`}>Saved</span>
+            <span className={`text-[10px] tracking-tight ${savedCount > 0 ? 'text-[#4F46E5] font-medium' : ''}`}>Saved</span>
           </button>
         ) : (
           <Link
             to="/explore"
-            className="flex flex-col items-center justify-center flex-1 h-full gap-1 text-slate-500 hover:text-blue-600 active:scale-90 transition-transform"
+            className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 text-[#6B7280]"
           >
-            <BookmarkCheck className="w-5 h-5 stroke-[1.75]" />
-            <span className="text-[10px] font-medium tracking-tight">Saved</span>
+            <BookmarkCheck className="w-4 h-4" />
+            <span className="text-[10px] tracking-tight">Saved</span>
           </Link>
         )}
       </nav>

@@ -9,15 +9,10 @@ import {
   ArrowRight, 
   Bookmark, 
   BookmarkCheck, 
-  Sparkles, 
-  X, 
   Clock, 
-  Briefcase, 
   Calendar, 
-  Layers, 
-  GraduationCap,
-  SlidersHorizontal,
-  ChevronRight
+  Layers,
+  X
 } from 'lucide-react';
 import Navigation from './Navigation';
 
@@ -29,7 +24,6 @@ export default function ExploreRoles() {
   const [selectedForCompare, setSelectedForCompare] = useState<string[]>([]);
   const [savedRoleIds, setSavedRoleIds] = useState<string[]>([]);
   const [isSavedDrawerOpen, setIsSavedDrawerOpen] = useState(false);
-  const [justPoppedId, setJustPoppedId] = useState<string | null>(null);
 
   // Quick filters
   const [onlyBeginnerFriendly, setOnlyBeginnerFriendly] = useState(false);
@@ -67,9 +61,6 @@ export default function ExploreRoles() {
       updated = savedRoleIds.filter(id => id !== roleId);
     } else {
       updated = [...savedRoleIds, roleId];
-      // Trigger subtle pop animation
-      setJustPoppedId(roleId);
-      setTimeout(() => setJustPoppedId(null), 400);
     }
     setSavedRoleIds(updated);
     localStorage.setItem('savedRoleIds', JSON.stringify(updated));
@@ -92,7 +83,7 @@ export default function ExploreRoles() {
         return prev.filter(id => id !== roleId);
       }
       if (prev.length >= 3) {
-        return [...prev.slice(1), roleId]; // Allow up to 3 roles
+        return [...prev.slice(1), roleId];
       }
       return [...prev, roleId];
     });
@@ -135,20 +126,17 @@ export default function ExploreRoles() {
     return matchesSearch && matchesCategory && matchesBeginner && matchesInternship && matchesHours && matchesSaved;
   });
 
-  // Sort to prioritize roles matching user preferences
   const sortedRoles = [...filteredRoles].sort((a, b) => {
     if (!userPreferences) return 0;
     
     let scoreA = 0;
     let scoreB = 0;
 
-    // Boost roles matching year level
     if (userPreferences.year === 'First-year' || userPreferences.year === 'Sophomore') {
       if (a.bestFor.some((bf: string) => bf.toLowerCase().includes('first-year'))) scoreA += 3;
       if (b.bestFor.some((bf: string) => bf.toLowerCase().includes('first-year'))) scoreB += 3;
     }
 
-    // Boost based on goals
     if (userPreferences.goals?.includes('internship')) {
       if (a.id === 'software-dev-intern' || a.id === 'web-dev-assistant' || a.id === 'database-admin-assistant') scoreA += 4;
       if (b.id === 'software-dev-intern' || b.id === 'web-dev-assistant' || b.id === 'database-admin-assistant') scoreB += 4;
@@ -159,7 +147,6 @@ export default function ExploreRoles() {
       if (b.id === 'data-assistant' || b.id === 'teaching-assistant' || b.id === 'ux-research-assistant') scoreB += 4;
     }
 
-    // Boost based on constraints
     if (userPreferences.constraints === 'limited-experience' || userPreferences.constraints === 'first-job') {
       if (a.prerequisites.length <= 2) scoreA += 2;
       if (b.prerequisites.length <= 2) scoreB += 2;
@@ -171,174 +158,146 @@ export default function ExploreRoles() {
   const savedRolesList = roles.filter(r => savedRoleIds.includes(r.id));
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] pb-28">
+    <div className="min-h-screen bg-[#FAFAFA] pb-24">
       <Navigation 
         savedCount={savedRoleIds.length} 
         onOpenSavedDrawer={() => setIsSavedDrawerOpen(true)} 
       />
 
-      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-10">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-5">
-            <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider mb-2 border border-blue-100">
-                <Sparkles className="w-3.5 h-3.5" />
-                <span>Berea CS Labor Ecosystem</span>
-              </div>
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Explore CS & IT Labor Roles
-              </h1>
-              <p className="text-slate-600 mt-1.5 text-sm sm:text-base">
-                {userPreferences 
-                  ? `Showing ${sortedRoles.length} roles prioritized for your academic year and career goals.`
-                  : `Browse all ${sortedRoles.length} transparent labor pathways at Berea College.`
-                }
-              </p>
-            </div>
-            
-            <div className="hidden sm:flex items-center gap-3">
-              <button
-                type="button"
-                onClick={() => setIsSavedDrawerOpen(true)}
-                className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-2xl border text-sm font-semibold transition-all active:scale-95 shadow-xs ${
-                  savedRoleIds.length > 0
-                    ? 'bg-blue-600 border-blue-600 text-white shadow-blue-500/20 hover:bg-blue-700'
-                    : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
-                }`}
-              >
-                <BookmarkCheck className={`w-4 h-4 ${savedRoleIds.length > 0 ? 'text-white' : 'text-slate-400'}`} />
-                <span>My Saved Pathway ({savedRoleIds.length})</span>
-              </button>
-            </div>
-          </div>
+      {/* Global 1120px centered container (Priority 3 & Layout Rule) */}
+      <div className="max-w-[1120px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        {/* Page Header (No duplicate My Saved Pathway button - Priority 5) */}
+        <div className="mb-6">
+          <h1 className="text-2xl sm:text-2xl font-semibold text-[#0A0E14] tracking-tight">
+            Explore CS & IT Labor Roles
+          </h1>
+          <p className="text-[#6B7280] mt-1 text-sm">
+            {userPreferences 
+              ? `Showing ${sortedRoles.length} roles prioritized for your profile.`
+              : `Browse all ${sortedRoles.length} student labor positions in the CS and IT departments.`
+            }
+          </p>
 
-          {/* User Preferences Banner */}
+          {/* User Preferences Context Strip */}
           {userPreferences && (
-            <div className="bg-gradient-to-r from-blue-50/90 via-indigo-50/70 to-purple-50/90 border border-blue-200/70 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm shadow-2xs">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs">
-                  <Sparkles className="w-4 h-4" />
-                </div>
-                <p className="text-slate-900 text-xs sm:text-sm leading-relaxed">
-                  <strong className="font-bold text-blue-950">Personalized for:</strong> {userPreferences.year} · {userPreferences.goals?.length || 0} goal(s) selected
-                  {userPreferences.constraints && userPreferences.constraints !== 'none' && ` · ${userPreferences.constraints}`}
-                </p>
-              </div>
+            <div className="mt-3 bg-[#EEF0FF] border border-[#D0D5DD] rounded-[6px] px-3.5 py-2 flex items-center justify-between gap-3 text-xs text-[#3D4451]">
+              <p>
+                <strong className="font-semibold text-[#4F46E5]">Personalized for:</strong> {userPreferences.year}
+                {userPreferences.goals?.length > 0 && ` · ${userPreferences.goals.length} goal(s)`}
+                {userPreferences.constraints && userPreferences.constraints !== 'none' && ` · ${userPreferences.constraints}`}
+              </p>
               <Link
                 to="/onboarding"
-                className="text-xs text-blue-700 font-bold hover:text-blue-950 px-3.5 py-1.5 bg-white rounded-xl border border-blue-200/80 shadow-2xs active:scale-95 transition-transform self-start sm:self-auto"
+                className="text-[#4F46E5] font-medium hover:underline flex-shrink-0"
               >
-                Edit Preferences
+                Edit
               </Link>
             </div>
           )}
         </div>
 
-        {/* Search and Filters Card */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-200/80 p-5 sm:p-7 mb-8">
-          <div className="flex flex-col md:flex-row gap-4 mb-5">
-            <div className="flex-1 relative">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-slate-100 text-slate-400 flex items-center justify-center pointer-events-none">
-                <Search className="w-4 h-4" />
-              </div>
-              <input
-                type="text"
-                placeholder="Search by role title, skills (Python, SQL, HTML), department, or Handshake query..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-14 pr-12 py-3.5 bg-slate-50/70 border border-slate-200 rounded-2xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-sm placeholder:text-slate-400 transition-all"
-              />
-              {searchTerm && (
-                <button 
-                  onClick={() => setSearchTerm('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 hover:text-slate-700 px-2 py-1 bg-slate-200/70 rounded-lg active:scale-90 transition-transform"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
+        {/* Search and Filters */}
+        <div className="bg-[#FFFFFF] rounded-[8px] border border-[#D0D5DD] shadow-[0_1px_2px_rgba(10,14,20,0.04)] p-4 sm:p-5 mb-6">
+          {/* Search bar */}
+          <div className="relative mb-3.5">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280] w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search by role title, skill (Python, SQL), or department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-9 pr-10 py-2 border border-[#D0D5DD] rounded-[6px] text-sm text-[#0A0E14] placeholder-[#6B7280] focus:outline-none focus:border-[#4F46E5] focus:ring-1 focus:ring-[#4F46E5] bg-[#FFFFFF] transition-colors"
+            />
+            {searchTerm && (
+              <button 
+                onClick={() => setSearchTerm('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-medium text-[#6B7280] hover:text-[#0A0E14]"
+              >
+                Clear
+              </button>
+            )}
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex items-center gap-2 flex-wrap mb-4">
-            <div className="flex items-center gap-1.5 text-slate-400 mr-1">
-              <Filter className="w-3.5 h-3.5" />
-              <span className="text-[11px] font-bold uppercase tracking-wider">Categories:</span>
-            </div>
-            {categories.map(category => (
-              <button
-                key={category}
-                onClick={() => toggleCategory(category)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all active:scale-95 ${
-                  selectedCategories.includes(category)
-                    ? 'bg-slate-900 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200/80'
-                }`}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="flex items-center gap-1.5 flex-wrap mb-3">
+            <span className="text-xs font-medium uppercase tracking-wider text-[#6B7280] mr-1">
+              Category:
+            </span>
+            {categories.map(category => {
+              const isSelected = selectedCategories.includes(category);
+              return (
+                <button
+                  key={category}
+                  onClick={() => toggleCategory(category)}
+                  className={`px-2.5 py-1 rounded-[6px] text-xs font-medium transition-colors ${
+                    isSelected
+                      ? 'bg-[#EEF0FF] text-[#4F46E5] border border-[#4F46E5]'
+                      : 'bg-[#F3F4F6] text-[#3D4451] hover:bg-[#E5E7EB]'
+                  }`}
+                >
+                  {category}
+                </button>
+              );
+            })}
             {selectedCategories.length > 0 && (
               <button
                 onClick={() => setSelectedCategories([])}
-                className="text-xs text-blue-600 underline font-bold ml-1.5 hover:text-blue-800"
+                className="text-xs text-[#4F46E5] hover:underline font-medium ml-1"
               >
                 Reset
               </button>
             )}
           </div>
 
-          {/* Quick Attribute Toggles */}
-          <div className="flex items-center gap-2 flex-wrap pt-4 border-t border-slate-100 text-xs">
-            <div className="flex items-center gap-1 text-slate-400 mr-1">
-              <SlidersHorizontal className="w-3.5 h-3.5" />
-              <span className="font-bold uppercase tracking-wider text-[11px]">Quick Filters:</span>
-            </div>
+          {/* Quick Filters */}
+          <div className="flex items-center gap-1.5 flex-wrap pt-3 border-t border-[#D0D5DD]/50 text-xs">
+            <span className="font-medium uppercase tracking-wider text-[#6B7280] mr-1">
+              Filter:
+            </span>
             
             <button
               onClick={() => setOnlyBeginnerFriendly(!onlyBeginnerFriendly)}
-              className={`px-3 py-1.5 rounded-xl border font-semibold transition-all active:scale-95 ${
+              className={`px-2.5 py-1 rounded-[6px] font-medium transition-colors ${
                 onlyBeginnerFriendly
-                  ? 'bg-emerald-50 border-emerald-300 text-emerald-900 shadow-2xs'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-[#DCFCE7] text-[#15803D] border border-[#15803D]'
+                  : 'bg-[#F3F4F6] text-[#3D4451] hover:bg-[#E5E7EB]'
               }`}
             >
-              🌱 Beginner Friendly
+              Beginner Friendly
             </button>
 
             <button
               onClick={() => setOnlyInternshipAligned(!onlyInternshipAligned)}
-              className={`px-3 py-1.5 rounded-xl border font-semibold transition-all active:scale-95 ${
+              className={`px-2.5 py-1 rounded-[6px] font-medium transition-colors ${
                 onlyInternshipAligned
-                  ? 'bg-purple-50 border-purple-300 text-purple-900 shadow-2xs'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-[#EEF0FF] text-[#4F46E5] border border-[#4F46E5]'
+                  : 'bg-[#F3F4F6] text-[#3D4451] hover:bg-[#E5E7EB]'
               }`}
             >
-              💼 Internship Focused
+              Internship Focused
             </button>
 
             <button
               onClick={() => setOnlyLightHours(!onlyLightHours)}
-              className={`px-3 py-1.5 rounded-xl border font-semibold transition-all active:scale-95 ${
+              className={`px-2.5 py-1 rounded-[6px] font-medium transition-colors ${
                 onlyLightHours
-                  ? 'bg-blue-50 border-blue-300 text-blue-900 shadow-2xs'
-                  : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                  ? 'bg-[#EEF0FF] text-[#4F46E5] border border-[#4F46E5]'
+                  : 'bg-[#F3F4F6] text-[#3D4451] hover:bg-[#E5E7EB]'
               }`}
             >
-              ⏱️ Under 10 hrs/week
+              Under 10 hrs/week
             </button>
 
             {savedRoleIds.length > 0 && (
               <button
                 onClick={() => setOnlySaved(!onlySaved)}
-                className={`px-3 py-1.5 rounded-xl border font-semibold transition-all active:scale-95 ${
+                className={`px-2.5 py-1 rounded-[6px] font-medium transition-colors ${
                   onlySaved
-                    ? 'bg-amber-50 border-amber-300 text-amber-900 shadow-2xs'
-                    : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'
+                    ? 'bg-[#EEF0FF] text-[#4F46E5] border border-[#4F46E5]'
+                    : 'bg-[#F3F4F6] text-[#3D4451] hover:bg-[#E5E7EB]'
                 }`}
               >
-                ⭐ Saved ({savedRoleIds.length})
+                Saved ({savedRoleIds.length})
               </button>
             )}
 
@@ -350,203 +309,150 @@ export default function ExploreRoles() {
                   setOnlyLightHours(false);
                   setOnlySaved(false);
                 }}
-                className="text-xs text-slate-400 underline ml-2 hover:text-slate-700 font-medium"
+                className="text-xs text-[#6B7280] hover:text-[#0A0E14] underline ml-1 font-normal"
               >
-                Clear
+                Clear all
               </button>
             )}
           </div>
         </div>
 
-        {/* Floating Glassmorphic Compare Bar */}
+        {/* Sticky Compare Bar */}
         {selectedForCompare.length > 0 && (
-          <div className="fixed bottom-6 inset-x-4 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-40 max-w-xl w-full">
-            <div className="bg-slate-900/90 text-white rounded-2xl p-4 sm:p-4.5 shadow-2xl backdrop-blur-md border border-slate-700/80 flex items-center justify-between gap-4 animate-in slide-in-from-bottom duration-200">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center flex-shrink-0 shadow-xs">
-                  <Layers className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="text-xs font-bold uppercase tracking-wider text-slate-300">Role Comparison</div>
-                  <div className="text-sm font-semibold text-white">
-                    {selectedForCompare.length} of 3 selected
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setSelectedForCompare([])}
-                  className="text-xs text-slate-400 hover:text-white underline font-medium px-2 py-1"
-                >
-                  Clear
-                </button>
-                <button
-                  onClick={handleCompare}
-                  disabled={selectedForCompare.length < 2}
-                  className={`flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all active:scale-95 ${
-                    selectedForCompare.length >= 2
-                      ? 'bg-blue-600 text-white hover:bg-blue-500 shadow-sm'
-                      : 'bg-slate-800 text-slate-500 cursor-not-allowed'
-                  }`}
-                >
-                  <span>Compare ({selectedForCompare.length})</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+          <div className="sticky top-16 z-30 mb-6 bg-[#0A0E14] text-white rounded-[8px] p-3.5 px-4 shadow-[0_2px_8px_rgba(10,14,20,0.08)] flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2 text-xs">
+              <Layers className="w-4 h-4 text-[#EEF0FF]" />
+              <span className="font-semibold text-white">Compare Roles:</span>
+              <span className="text-[#D0D5DD]">{selectedForCompare.length} of 3 selected</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSelectedForCompare([])}
+                className="text-xs text-[#D0D5DD] hover:text-white underline"
+              >
+                Clear
+              </button>
+              <button
+                onClick={handleCompare}
+                disabled={selectedForCompare.length < 2}
+                className={`px-3 py-1.5 rounded-[6px] text-xs font-medium transition-colors ${
+                  selectedForCompare.length >= 2
+                    ? 'bg-[#4F46E5] text-white hover:bg-[#6366F1]'
+                    : 'bg-[#3D4451] text-[#6B7280] cursor-not-allowed'
+                }`}
+              >
+                Compare ({selectedForCompare.length})
+              </button>
             </div>
           </div>
         )}
 
-        {/* Role Cards Grid */}
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
+        {/* Responsive Role Cards Grid (Section 2 & Priority 2) */}
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-5">
           {sortedRoles.map((role) => {
             const isSelectedForCompare = selectedForCompare.includes(role.id);
             const isRoleSaved = savedRoleIds.includes(role.id);
-            const isPopping = justPoppedId === role.id;
-            
-            // Determine match badges
             const isBeginner = role.bestFor.some(bf => bf.toLowerCase().includes('first-year') || bf.toLowerCase().includes('beginner'));
-            const isInternshipMatch = userPreferences?.goals?.includes('internship') && (role.category === 'Development' || role.category === 'Research & Analysis');
-            const isGradMatch = userPreferences?.goals?.includes('grad') && (role.id === 'data-assistant' || role.id === 'teaching-assistant' || role.id === 'ux-research-assistant');
 
             return (
               <div
                 key={role.id}
                 onClick={() => navigate(`/role/${role.id}`)}
-                className={`bg-white rounded-3xl shadow-xs border transition-all duration-200 cursor-pointer active:scale-[0.985] hover:shadow-xl hover:border-blue-300/80 flex flex-col justify-between group overflow-hidden ${
-                  isSelectedForCompare ? 'border-blue-600 ring-4 ring-blue-100 shadow-md' : 'border-slate-200/80'
+                className={`bg-[#FFFFFF] rounded-[8px] border transition-all duration-150 cursor-pointer flex flex-col justify-between overflow-hidden shadow-[0_1px_2px_rgba(10,14,20,0.04)] hover:shadow-[0_2px_8px_rgba(10,14,20,0.08)] hover:border-[#6366F1] ${
+                  isSelectedForCompare ? 'border-[#4F46E5] ring-2 ring-[#EEF0FF]' : 'border-[#D0D5DD]'
                 }`}
               >
-                <div className="p-6 sm:p-8">
-                  {/* Card Top Badges & Actions */}
-                  <div className="flex items-start justify-between gap-3 mb-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider border border-blue-100/80">
-                        {role.category}
-                      </span>
-                      {isInternshipMatch && (
-                        <span className="px-2.5 py-1 bg-purple-50 text-purple-800 rounded-full text-xs font-semibold flex items-center gap-1 border border-purple-100">
-                          <Briefcase className="w-3 h-3 text-purple-600" />
-                          Internship Match
+                {/* Internal padding 20px (--space-5) */}
+                <div className="p-5 flex-1 flex flex-col justify-between">
+                  {/* TIER 1: Category, status badge, quiet icons */}
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2.5">
+                      <div className="flex items-center gap-1.5">
+                        <span className="px-2 py-0.5 bg-[#F3F4F6] text-[#3D4451] rounded-[6px] text-xs font-medium">
+                          {role.category}
                         </span>
-                      )}
-                      {isGradMatch && (
-                        <span className="px-2.5 py-1 bg-indigo-50 text-indigo-800 rounded-full text-xs font-semibold flex items-center gap-1 border border-indigo-100">
-                          <GraduationCap className="w-3 h-3 text-indigo-600" />
-                          Grad Prep
-                        </span>
-                      )}
-                      {isBeginner && (
-                        <span className="px-2.5 py-1 bg-emerald-50 text-emerald-800 rounded-full text-xs font-semibold border border-emerald-100">
-                          🌱 Beginner Friendly
-                        </span>
-                      )}
+                        {isBeginner && (
+                          <span className="px-2 py-0.5 bg-[#DCFCE7] text-[#15803D] rounded-[6px] text-xs font-medium">
+                            Beginner
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Quiet Top-Right Action Icons */}
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={(e) => toggleSaveRole(role.id, e)}
+                          className="p-1 text-[#6B7280] hover:text-[#4F46E5] rounded-[4px] hover:bg-[#F3F4F6] transition-colors"
+                          title={isRoleSaved ? "Remove from saved" : "Save role"}
+                          aria-label="Save role"
+                        >
+                          {isRoleSaved ? (
+                            <BookmarkCheck className="w-4 h-4 text-[#4F46E5]" />
+                          ) : (
+                            <Bookmark className="w-4 h-4" />
+                          )}
+                        </button>
+
+                        <button
+                          onClick={(e) => toggleCompareSelection(role.id, e)}
+                          className="p-1 text-[#6B7280] hover:text-[#0A0E14] rounded-[4px] hover:bg-[#F3F4F6] transition-colors"
+                          aria-label="Select for comparison"
+                          title={isSelectedForCompare ? "Remove from comparison" : "Add to comparison"}
+                        >
+                          {isSelectedForCompare ? (
+                            <CheckSquare className="w-4 h-4 text-[#4F46E5]" />
+                          ) : (
+                            <Square className="w-4 h-4" />
+                          )}
+                        </button>
+                      </div>
                     </div>
 
-                    {/* Action buttons (Bookmark & Compare) */}
-                    <div className="flex items-center gap-1.5 -mr-1">
-                      <button
-                        onClick={(e) => toggleSaveRole(role.id, e)}
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-80 ${
-                          isRoleSaved 
-                            ? 'bg-blue-50 text-blue-600 border border-blue-200' 
-                            : 'bg-slate-50 text-slate-400 hover:text-blue-600 hover:bg-slate-100'
-                        } ${isPopping ? 'animate-bookmark-pop' : ''}`}
-                        title={isRoleSaved ? "Remove from saved pathway" : "Save to my pathway"}
-                        aria-label="Save role"
-                      >
-                        {isRoleSaved ? (
-                          <BookmarkCheck className="w-4 h-4" />
-                        ) : (
-                          <Bookmark className="w-4 h-4" />
-                        )}
-                      </button>
-
-                      <button
-                        onClick={(e) => toggleCompareSelection(role.id, e)}
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all active:scale-80 ${
-                          isSelectedForCompare
-                            ? 'bg-blue-600 text-white shadow-xs'
-                            : 'bg-slate-50 text-slate-400 hover:text-slate-700 hover:bg-slate-100'
-                        }`}
-                        aria-label="Select for comparison"
-                        title={isSelectedForCompare ? "Remove from comparison" : "Add to comparison"}
-                      >
-                        {isSelectedForCompare ? (
-                          <CheckSquare className="w-4 h-4" />
-                        ) : (
-                          <Square className="w-4 h-4" />
-                        )}
-                      </button>
+                    {/* TIER 1: Title & Hours */}
+                    <h2 className="text-lg font-semibold text-[#0A0E14] tracking-tight leading-snug mb-1">
+                      {role.title}
+                    </h2>
+                    
+                    <div className="flex items-center gap-1.5 text-xs text-[#6B7280] mb-3">
+                      <Clock className="w-3.5 h-3.5 text-[#6B7280]" />
+                      <span className="font-normal text-[#3D4451]">{role.timeCommitment}</span>
                     </div>
-                  </div>
 
-                  {/* Title & Description */}
-                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2 tracking-tight">
-                    {role.title}
-                  </h3>
-                  <p className="text-slate-600 text-sm mb-5 line-clamp-2 leading-relaxed">
-                    {role.description}
-                  </p>
+                    {/* TIER 2: Truncated description */}
+                    <p className="text-sm text-[#3D4451] line-clamp-2 leading-relaxed mb-3">
+                      {role.description}
+                    </p>
 
-                  {/* Skills Preview */}
-                  <div className="mb-5">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">Skills you'll develop:</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {role.skills.slice(0, 4).map((skill, idx) => (
+                    {/* TIER 2: 2–3 skill pills max (no +N clutter) */}
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {role.skills.slice(0, 3).map((skill, idx) => (
                         <span
                           key={idx}
-                          className="px-3 py-1 bg-slate-100/80 text-slate-700 rounded-xl text-xs font-semibold"
+                          className="px-2 py-0.5 bg-[#F3F4F6] text-[#3D4451] rounded-[6px] text-xs font-normal"
                         >
                           {skill}
                         </span>
                       ))}
-                      {role.skills.length > 4 && (
-                        <span className="px-2 py-1 text-slate-400 text-xs font-medium self-center">
-                          +{role.skills.length - 4} more
-                        </span>
-                      )}
                     </div>
                   </div>
 
-                  {/* Prerequisites Preview */}
-                  <div className="mb-5 pb-5 border-b border-slate-100">
-                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Prerequisites:</p>
-                    <ul className="space-y-1.5">
-                      {role.prerequisites.slice(0, 2).map((prereq, idx) => (
-                        <li key={idx} className="flex items-start text-xs text-slate-700 leading-relaxed">
-                          <span className="w-1.5 h-1.5 rounded-full bg-slate-400 mt-1.5 mr-2.5 flex-shrink-0" />
-                          <span>{prereq}</span>
-                        </li>
-                      ))}
-                      {role.prerequisites.length > 2 && (
-                        <li className="text-slate-400 text-xs italic pl-4 pt-0.5">
-                          +{role.prerequisites.length - 2} more in details
-                        </li>
-                      )}
-                    </ul>
-                  </div>
-
-                  {/* Hiring Cycle & Department */}
-                  <div className="flex items-center gap-2.5 text-xs text-emerald-900 leading-relaxed">
-                    <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
-                      <Calendar className="w-3.5 h-3.5" />
+                  {/* TIER 3: Hiring window meta row */}
+                  <div className="pt-2.5 border-t border-[#D0D5DD]/40 flex items-center justify-between text-xs text-[#6B7280]">
+                    <div className="flex items-center gap-1.5 truncate">
+                      <Calendar className="w-3.5 h-3.5 text-[#6B7280] flex-shrink-0" />
+                      <span className="truncate">{role.hiringCycle}</span>
                     </div>
-                    <span className="font-semibold truncate">Hiring Window: {role.hiringCycle}</span>
+                    <span className="text-[11px] text-[#6B7280] flex-shrink-0">
+                      {role.prerequisiteChecklist.length} prereq{role.prerequisiteChecklist.length === 1 ? '' : 's'}
+                    </span>
                   </div>
                 </div>
 
-                {/* Card Footer */}
-                <div className="p-4 px-6 sm:px-8 bg-slate-50/70 border-t border-slate-100 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2 text-xs text-slate-600">
-                    <div className="w-6 h-6 rounded-md bg-slate-200/70 text-slate-500 flex items-center justify-center flex-shrink-0">
-                      <Clock className="w-3 h-3" />
-                    </div>
-                    <span className="font-medium truncate">{role.timeCommitment}</span>
-                  </div>
-                  <span className="flex items-center gap-1 text-xs font-bold text-blue-600 group-hover:text-blue-700">
+                {/* FULL-WIDTH BOTTOM CTA STRIP (Section 2) */}
+                <div className="px-5 py-2.5 bg-[#F3F4F6] border-t border-[#D0D5DD] flex items-center justify-end text-xs font-medium text-[#4F46E5]">
+                  <span className="flex items-center gap-1">
                     <span>View Role</span>
-                    <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </span>
                 </div>
               </div>
@@ -556,11 +462,9 @@ export default function ExploreRoles() {
 
         {/* Empty state */}
         {sortedRoles.length === 0 && (
-          <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 p-8">
-            <h3 className="text-lg font-bold text-slate-800 mb-2">No matching labor roles found</h3>
-            <p className="text-sm text-slate-600 mb-5 max-w-md mx-auto leading-relaxed">
-              We couldn't find roles matching your current search and filter combination.
-            </p>
+          <div className="text-center py-12 bg-[#FFFFFF] rounded-[8px] border border-[#D0D5DD] p-6">
+            <p className="text-sm font-semibold text-[#0A0E14] mb-1">No matching roles found</p>
+            <p className="text-xs text-[#6B7280] mb-4">Try clearing your search query or filters.</p>
             <button
               onClick={() => {
                 setSearchTerm('');
@@ -570,9 +474,9 @@ export default function ExploreRoles() {
                 setOnlyLightHours(false);
                 setOnlySaved(false);
               }}
-              className="px-6 py-2.5 bg-blue-600 text-white rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors shadow-xs active:scale-95"
+              className="px-3.5 py-1.5 bg-[#4F46E5] text-white rounded-[6px] text-xs font-medium hover:bg-[#6366F1] transition-colors"
             >
-              Reset All Filters
+              Reset Filters
             </button>
           </div>
         )}
@@ -580,102 +484,88 @@ export default function ExploreRoles() {
 
       {/* MY SAVED PATHWAY DRAWER */}
       {isSavedDrawerOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/60 backdrop-blur-xs">
-          <div className="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between animate-in slide-in-from-right duration-200">
-            {/* Drawer Header */}
-            <div className="p-6 sm:p-7 border-b border-slate-100 flex items-center justify-between bg-slate-900 text-white">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center">
-                  <BookmarkCheck className="w-4 h-4" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold">My Saved Pathway</h2>
-                  <p className="text-xs text-slate-400">{savedRolesList.length} shortlisted role(s)</p>
-                </div>
+        <div className="fixed inset-0 z-50 flex items-center justify-end bg-black/40 backdrop-blur-xs">
+          <div className="bg-[#FFFFFF] w-full max-w-md h-full shadow-lg flex flex-col justify-between border-l border-[#D0D5DD]">
+            <div className="p-4 px-5 border-b border-[#D0D5DD] flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <BookmarkCheck className="w-4 h-4 text-[#4F46E5]" />
+                <h2 className="text-base font-semibold text-[#0A0E14]">My Saved Pathway</h2>
               </div>
               <button
                 onClick={() => setIsSavedDrawerOpen(false)}
-                className="w-9 h-9 rounded-xl bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 flex items-center justify-center transition-colors"
+                className="p-1 text-[#6B7280] hover:text-[#0A0E14] rounded-[6px]"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            {/* Saved Roles List */}
-            <div className="p-6 sm:p-7 overflow-y-auto flex-1 space-y-4">
+            <div className="p-5 overflow-y-auto flex-1 space-y-3">
               {savedRolesList.length === 0 ? (
-                <div className="text-center py-20 text-slate-400">
-                  <div className="w-14 h-14 rounded-2xl bg-slate-100 text-slate-300 flex items-center justify-center mx-auto mb-3">
-                    <Bookmark className="w-6 h-6" />
-                  </div>
-                  <p className="text-base font-bold text-slate-800">No saved roles yet</p>
-                  <p className="text-xs text-slate-500 mt-1 leading-relaxed max-w-xs mx-auto">
-                    Click the bookmark ribbon on any role card to curate your 4-year labor pathway!
+                <div className="text-center py-16 text-[#6B7280]">
+                  <Bookmark className="w-8 h-8 text-[#D0D5DD] mx-auto mb-2" />
+                  <p className="text-sm font-medium text-[#0A0E14]">No saved roles yet</p>
+                  <p className="text-xs text-[#6B7280] mt-1 max-w-xs mx-auto">
+                    Click the bookmark icon on any card to save it to your pathway.
                   </p>
                 </div>
               ) : (
-                <>
-                  {savedRolesList.map((savedRole) => (
-                    <div 
-                      key={savedRole.id}
-                      className="p-5 border border-slate-200/80 rounded-2xl hover:border-blue-300 bg-slate-50/50 flex flex-col justify-between shadow-2xs"
-                    >
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <div>
-                          <span className="text-[10px] text-blue-600 font-bold uppercase tracking-wider">{savedRole.category}</span>
-                          <h4 className="font-bold text-slate-900 text-base mt-0.5">{savedRole.title}</h4>
-                        </div>
-                        <button
-                          onClick={(e) => toggleSaveRole(savedRole.id, e)}
-                          className="text-xs text-slate-400 hover:text-red-600 font-semibold px-2 py-1 rounded-lg hover:bg-red-50"
-                          title="Remove from saved"
-                        >
-                          Remove
-                        </button>
+                savedRolesList.map((savedRole) => (
+                  <div 
+                    key={savedRole.id}
+                    className="p-4 border border-[#D0D5DD] rounded-[8px] bg-[#FFFFFF] flex flex-col justify-between"
+                  >
+                    <div className="flex items-start justify-between gap-2 mb-1.5">
+                      <div>
+                        <span className="text-[10px] font-medium text-[#6B7280] uppercase tracking-wider">{savedRole.category}</span>
+                        <h3 className="font-semibold text-[#0A0E14] text-sm mt-0.5">{savedRole.title}</h3>
                       </div>
-                      <p className="text-xs text-slate-600 line-clamp-2 mb-4 leading-relaxed">{savedRole.description}</p>
-                      
-                      <div className="flex items-center justify-between pt-3 border-t border-slate-200/60 text-xs">
-                        <Link
-                          to={`/role/${savedRole.id}`}
-                          onClick={() => setIsSavedDrawerOpen(false)}
-                          className="text-blue-600 font-bold hover:underline flex items-center gap-1"
-                        >
-                          <span>View Details</span>
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </Link>
-                        <button
-                          onClick={(e) => {
-                            toggleCompareSelection(savedRole.id, e);
-                            setIsSavedDrawerOpen(false);
-                          }}
-                          className="text-slate-600 hover:text-slate-900 underline font-medium"
-                        >
-                          {selectedForCompare.includes(savedRole.id) ? "In Compare" : "Add to Compare"}
-                        </button>
-                      </div>
+                      <button
+                        onClick={(e) => toggleSaveRole(savedRole.id, e)}
+                        className="text-xs text-[#6B7280] hover:text-red-600 font-normal"
+                      >
+                        Remove
+                      </button>
                     </div>
-                  ))}
-                </>
+                    <p className="text-xs text-[#3D4451] line-clamp-2 mb-3">{savedRole.description}</p>
+                    
+                    <div className="flex items-center justify-between pt-2.5 border-t border-[#D0D5DD]/40 text-xs">
+                      <Link
+                        to={`/role/${savedRole.id}`}
+                        onClick={() => setIsSavedDrawerOpen(false)}
+                        className="text-[#4F46E5] font-medium hover:underline"
+                      >
+                        View Details
+                      </Link>
+                      <button
+                        onClick={(e) => {
+                          toggleCompareSelection(savedRole.id, e);
+                          setIsSavedDrawerOpen(false);
+                        }}
+                        className="text-[#6B7280] hover:text-[#0A0E14] font-normal"
+                      >
+                        {selectedForCompare.includes(savedRole.id) ? "In Compare" : "+ Compare"}
+                      </button>
+                    </div>
+                  </div>
+                ))
               )}
             </div>
 
-            {/* Drawer Footer */}
-            <div className="p-5 px-7 border-t border-slate-100 bg-slate-50 flex items-center justify-between">
+            <div className="p-4 border-t border-[#D0D5DD] bg-[#FAFAFA]">
               {savedRolesList.length >= 2 ? (
                 <button
                   onClick={() => {
                     setIsSavedDrawerOpen(false);
                     navigate(`/compare?roles=${savedRolesList.slice(0, 3).map(r => r.id).join(',')}`);
                   }}
-                  className="w-full py-3 bg-blue-600 text-white rounded-2xl text-sm font-bold hover:bg-blue-700 transition-all text-center shadow-sm active:scale-95"
+                  className="w-full py-2 bg-[#4F46E5] text-white rounded-[6px] text-xs font-medium hover:bg-[#6366F1] transition-colors"
                 >
-                  Compare All Saved Roles ({savedRolesList.length})
+                  Compare Saved Roles ({savedRolesList.length})
                 </button>
               ) : (
                 <button
                   onClick={() => setIsSavedDrawerOpen(false)}
-                  className="w-full py-2.5 bg-slate-200 text-slate-800 rounded-xl text-sm font-semibold hover:bg-slate-300 transition-colors"
+                  className="w-full py-2 bg-[#FFFFFF] border border-[#D0D5DD] text-[#3D4451] rounded-[6px] text-xs font-medium hover:bg-[#F3F4F6]"
                 >
                   Close
                 </button>
