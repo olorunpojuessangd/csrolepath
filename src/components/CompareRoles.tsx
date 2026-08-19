@@ -1,6 +1,7 @@
 import { useSearchParams, Link, useNavigate } from 'react-router';
 import { roles, Role } from '../data/roles';
 import { ArrowLeft, ArrowRight, ExternalLink, Calendar, MapPin, Briefcase, Sparkles, CheckCircle2 } from 'lucide-react';
+import Navigation from './Navigation';
 
 export default function CompareRoles() {
   const [searchParams] = useSearchParams();
@@ -65,13 +66,15 @@ export default function CompareRoles() {
   const gridClass = colCount === 3 ? 'grid-cols-1 md:grid-cols-4' : 'grid-cols-1 md:grid-cols-3';
 
   return (
-    <div className="min-h-screen bg-gray-50/70 pb-24">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 py-10">
+    <div className="min-h-screen bg-[#f8fafc] pb-28">
+      <Navigation />
+
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-10">
         {/* Top Navigation */}
         <div className="mb-8 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2.5 text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium px-3 py-2 -ml-3 rounded-lg hover:bg-gray-100/80"
+            className="flex items-center gap-2 text-slate-600 hover:text-slate-900 transition-all text-xs sm:text-sm font-semibold px-3.5 py-2 -ml-3 rounded-xl hover:bg-slate-200/60 active:scale-95"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Back to previous page</span>

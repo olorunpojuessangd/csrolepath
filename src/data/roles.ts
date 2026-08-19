@@ -59,7 +59,7 @@ export const roles: Role[] = [
     whyGoodFit: "This role provides immediate visual feedback on your work, making it easier to build confidence. You'll build a portfolio of real projects while learning industry-standard tools. Faculty supervisors understand you're learning.",
     timeCommitment: "8-10 hours/week",
     department: "Information Technology Services / Academic Departments",
-    location: "Danforth Technology Building / Hutchins Library",
+    location: "CMIT Technology Building / Hutchins Library",
     contactPerson: "ITS Web Support Supervisor & CS Department Coordinator",
     hiringCycle: "Late Spring for Fall semester · Late Fall for Spring semester",
     handshakeQuery: "Web Development Assistant",
@@ -100,7 +100,7 @@ export const roles: Role[] = [
     whyGoodFit: "If you learn best by teaching, this solidifies your technical foundation while building leadership skills. You'll work closely with CS faculty who can write strong reference letters for internships and grad school.",
     timeCommitment: "6-8 hours/week (flexible around class schedule)",
     department: "Computer Science Department",
-    location: "Danforth Technology Building (CS Labs)",
+    location: "CMIT Technology Building (CS Labs)",
     contactPerson: "CS Department Chair & Course Instructors",
     hiringCycle: "Mid-to-Late semester prior (March for Fall / October for Spring)",
     handshakeQuery: "Computer Science Teaching Assistant",
@@ -115,23 +115,23 @@ export const roles: Role[] = [
     id: "data-assistant",
     title: "Data & Research Assistant",
     category: "Research & Analysis",
-    skills: ["Data cleaning", "Excel/Google Sheets", "Basic statistics", "Python / R", "Data visualization", "Documentation"],
+    skills: ["Data cleaning", "Excel/Google Sheets", "Basic statistics", "Python / R", "Data visualization", "Critical thinking"],
     prerequisites: ["CSC 236 (Data Structures) or equivalent", "Interest in research or quantitative analysis"],
     prerequisiteChecklist: [
       { id: "csc236", label: "Completed or taking CSC 236 (Data Structures) or equivalent programming", isCourse: true, courseCode: "CSC 236" },
       { id: "python_sheets", label: "Basic familiarity with Python, R, or spreadsheet analysis" },
       { id: "attention_detail", label: "Careful attention to detail and data integrity" }
     ],
-    bestFor: ["Detail-oriented students", "Students considering research / data science careers", "Double majors (Math/Stats/CS)"],
+    bestFor: ["Students interested in data science", "Students considering research/grad school", "Analytical problem solvers"],
     description: "Support faculty research projects or institutional research by collecting, cleaning, and analyzing data. May involve surveys, data visualization, or literature reviews.",
     whatYouLearn: [
-      "How empirical research actually works from proposal to publication",
-      "Data ethics, privacy considerations, and IRB standards",
-      "Statistical modeling and interpretation of noisy data",
-      "How to document reproducible research pipelines",
-      "Collaboration with cross-disciplinary researchers"
+      "Practical data manipulation with Python (Pandas), R, or advanced SQL",
+      "How academic research methodologies and empirical studies are designed",
+      "Creating clear charts and visual reports for diverse audiences",
+      "Handling real-world, imperfect institutional datasets",
+      "Scientific writing and presentation skills"
     ],
-    typicalBackground: "Students with programming fundamentals who are curious about applying CS to real-world questions. You don't need advanced statistics—just willingness to learn and careful attention to detail.",
+    typicalBackground: "Students who enjoy finding patterns in information. Often taken by students who liked math or stats alongside CS. Faculty understand you may be learning analysis tools on the job.",
     commonNextSteps: [
       "NSF REU (Research Experiences for Undergraduates)",
       "Data Science / Analytics Internships",
@@ -141,7 +141,7 @@ export const roles: Role[] = [
     whyGoodFit: "This role shows you how CS connects to real-world domains. You'll develop critical thinking about data while building co-authored research papers or presentations. Faculty mentors write stellar grad school recommendations.",
     timeCommitment: "8-12 hours/week (very flexible scheduling)",
     department: "Faculty Research Labs / Institutional Research",
-    location: "Danforth Technology Building / Frost Building",
+    location: "CMIT Technology Building / Frost Building",
     contactPerson: "Faculty Principal Investigators & Institutional Research Director",
     hiringCycle: "Rolling basis · Major openings posted in April and November",
     handshakeQuery: "Data Research Assistant",
@@ -222,7 +222,7 @@ export const roles: Role[] = [
     whyGoodFit: "This is the closest on-campus experience to industry software development. You'll build skills directly applicable to coding interviews and co-op positions with strong mentorship from senior developers.",
     timeCommitment: "10-15 hours/week",
     department: "ITS Software Engineering Team / Partner Organizations",
-    location: "Danforth Technology Building / ITS Annex",
+    location: "CMIT Technology Building / ITS Annex",
     contactPerson: "Director of Enterprise Applications & CS Faculty Mentor",
     hiringCycle: "February–March for upcoming Academic Year",
     handshakeQuery: "Software Development Intern",
@@ -234,43 +234,43 @@ export const roles: Role[] = [
     ]
   },
   {
-    id: "lab-monitor",
-    title: "Computer Lab Monitor",
+    id: "makerspace-lab-assistant",
+    title: "CMIT Tech & Makerspace Assistant",
     category: "Support & Infrastructure",
-    skills: ["Reliability", "Basic lab troubleshooting", "Time management", "Campus resource navigation"],
-    prerequisites: ["None (Open to all class years)", "Reliability, punctuality, and helpful attitude"],
+    skills: ["3D Printing & CAD", "Linux/Raspberry Pi", "Hardware Troubleshooting", "Lab Safety & Tool Maintenance", "Peer Mentoring"],
+    prerequisites: ["Curiosity for hands-on hardware & prototyping", "Reliability and helpful peer attitude"],
     prerequisiteChecklist: [
-      { id: "no_prereqs", label: "Open to all students—no prior CS courses required!" },
-      { id: "punctual", label: "Ability to commit to consistent weekly lab supervision shifts" },
-      { id: "peer_friendly", label: "Friendly and approachable attitude in study spaces" }
+      { id: "hands_on_interest", label: "Interest in 3D printing, microcontrollers (Arduino/Pi), or hardware tinkering" },
+      { id: "lab_safety", label: "Willingness to complete equipment safety training" },
+      { id: "first_year_welcome", label: "Open to all class years—great for first-years!" }
     ],
-    bestFor: ["First-year students", "Students needing study-friendly work", "Students building initial labor history"],
-    description: "Ensure computer labs are safe, clean, and functional. Help students with basic questions, report equipment issues, and maintain a productive study environment.",
+    bestFor: ["First-year & sophomore students", "Students interested in IoT, robotics, or hardware", "Makers & builders"],
+    description: "Support the CS department's hardware lab and makerspace in CMIT. Assist students with 3D printers, microcontrollers, VR gear, and maintain Linux workstation environments.",
     whatYouLearn: [
-      "Professional workplace accountability and reliability",
-      "How to balance campus work commitments alongside difficult coursework",
-      "Basic hardware/printer troubleshooting and escalation protocols",
-      "Exposure to advanced CS peers and upperclassmen projects",
-      "Time management in an independent work setting"
+      "Hardware prototyping with microcontrollers, sensors, and 3D design software",
+      "Linux terminal operations and departmental lab station maintenance",
+      "Lab safety management, inventory tracking, and equipment maintenance",
+      "Mentoring fellow students through hands-on technical course projects",
+      "Troubleshooting electronic components, wiring, and network peripherals"
     ],
-    typicalBackground: "No prior experience required. This is often a first campus job for many CS first-years. What matters most is reliability and a willingness to help others.",
+    typicalBackground: "Curious students of all years who enjoy hands-on making and tinkering. No prior hardware experience strictly required—department supervisors provide comprehensive equipment training.",
     commonNextSteps: [
+      "Robotics & Embedded Systems Internships",
+      "Software Development Intern (ITS)",
       "IT Student Support Specialist",
-      "Teaching Assistant (CSC 126/226)",
-      "Web Development Assistant",
-      "CS Department Student Coordinator"
+      "Teaching Assistant for Hardware / Architecture courses"
     ],
-    whyGoodFit: "This role has lower technical barriers, making it accessible when you're still learning fundamentals. Provides structure and income while you explore what interests you. Often leads to strong peer study groups.",
-    timeCommitment: "8-12 hours/week (flexible morning, evening, weekend shifts)",
-    department: "Computer Science Department / Hutchins Library",
-    location: "Danforth CS Labs & Library Technology Spaces",
-    contactPerson: "CS Lab Coordinator",
-    hiringCycle: "Early August for Fall term · December for Spring term",
-    handshakeQuery: "Computer Lab Monitor",
-    internshipAlignment: "Builds foundational campus work history, time management, and reliability references from department supervisors for future role applications.",
+    whyGoodFit: "Provides hands-on physical computing experience without requiring heavy theoretical CS prerequisites. You get direct access to cutting-edge maker tools and faculty in CMIT.",
+    timeCommitment: "8-10 hours/week",
+    department: "Computer Science Department",
+    location: "CMIT Technology Building (Makerspace & Hardware Labs)",
+    contactPerson: "CMIT Technology Lab Director",
+    hiringCycle: "Early August for Fall term · Late November for Spring term",
+    handshakeQuery: "Makerspace Assistant",
+    internshipAlignment: "Demonstrates tangible hardware-software integration, rapid prototyping, and systems troubleshooting skills highly valued in IoT and engineering internships.",
     applicationMaterials: [
-      "Basic Handshake Labor Profile",
-      "Class Schedule for shift availability"
+      "Berea Handshake Labor Profile",
+      "Weekly class schedule for lab coverage"
     ]
   },
   {
@@ -278,54 +278,55 @@ export const roles: Role[] = [
     title: "Database Administration Assistant",
     category: "Research & Analysis",
     skills: ["SQL", "Database normalization", "Data integrity & backups", "ETL pipelines", "Documentation", "Query optimization"],
-    prerequisites: ["CSC 236", "CSC 226 recommended", "Strong organizational skills"],
+    prerequisites: ["CSC 236 (Data Structures)", "Interest in data modeling & SQL", "High attention to detail"],
     prerequisiteChecklist: [
       { id: "csc236", label: "Completed CSC 236 (Data Structures)", isCourse: true, courseCode: "CSC 236" },
       { id: "sql_curiosity", label: "Interest in relational databases, SQL queries, and data schemas" },
       { id: "data_hygiene", label: "Commitment to confidential data security and system integrity" }
     ],
-    bestFor: ["Sophomores, juniors, and seniors", "Students interested in backend engineering & data systems", "Detail-oriented problem solvers"],
-    description: "Assist with maintaining institutional databases, creating custom reports, ensuring data integrity, and documenting database schemas across campus divisions.",
+    bestFor: ["Sophomores and juniors", "Students interested in backend / data engineering", "Systematic organizers"],
+    description: "Assist with database maintenance, schema documentation, query optimization, and data migration pipelines under the mentorship of senior database administrators.",
     whatYouLearn: [
       "Production database management and query tuning",
       "How enterprise data flows through multi-tier institutional systems",
-      "Security, privacy regulations (FERPA), and backup/disaster recovery",
-      "Advanced SQL indexing and stored procedures",
-      "Cross-departmental stakeholder requirement gathering"
+      "Backup recovery procedures and disaster recovery planning",
+      "Data privacy compliance and role-based access control (RBAC)",
+      "Writing automated scripts for data transformation and sanity checks"
     ],
-    typicalBackground: "Students who have completed database coursework or shown strong aptitude in data structures. Many come from data assistant or IT support roles. Attention to detail is crucial.",
+    typicalBackground: "Students who enjoy structured thinking, logic puzzles, and backend architecture. Often a second labor position after taking CSC 236.",
     commonNextSteps: [
-      "Database Administrator (DBA) Positions",
-      "Backend Software Engineer",
+      "Database Administrator (DBA) Internships",
+      "Backend Engineer / Cloud Infrastructure roles",
       "Data Engineer Internships",
-      "Cloud Infrastructure & DevOps Roles"
+      "Enterprise Systems Analyst"
     ],
-    whyGoodFit: "If you like working with structured systems and ensuring things run smoothly behind the scenes, this builds specialized skills in high demand. Less visible than web development but equally valuable.",
+    whyGoodFit: "Gives you exposure to how large organizations actually manage mission-critical data. A standout resume builder for students pursuing backend, cloud, or data engineering careers.",
     timeCommitment: "10-12 hours/week",
-    department: "Information Technology Services / Institutional Research",
-    location: "Hutchins Library ITS Suite",
-    contactPerson: "Senior Database Administrator & Director of Enterprise Systems",
-    hiringCycle: "Mid-Spring for Fall term",
+    department: "ITS Enterprise Database & Infrastructure Team",
+    location: "CMIT Technology Building / ITS Operations",
+    contactPerson: "Lead Database Administrator & Infrastructure Manager",
+    hiringCycle: "Late Fall for Spring term · Late Spring for Fall term",
     handshakeQuery: "Database Administration Assistant",
-    internshipAlignment: "High-demand skill set: SQL and data pipeline mastery are core requirements for Backend, Cloud, and Data Engineering internship assessments.",
+    internshipAlignment: "SQL and relational database management are required in over 85% of software and data engineering job descriptions. Provides undeniable production database credentials.",
     applicationMaterials: [
-      "Labor Resume highlighting coursework in Data Structures / Databases",
-      "Unofficial Transcript"
+      "Resume highlighting programming & database projects",
+      "Unofficial Transcript",
+      "Short paragraph explaining interest in database management"
     ]
   },
   {
     id: "ux-research-assistant",
-    title: "UX Research Assistant",
+    title: "UX Research & Design Assistant",
     category: "Design & Research",
-    skills: ["User interviews", "Usability testing & think-alouds", "Qualitative synthesis", "Empathy & active listening", "Wireframing / Figma", "Design thinking"],
-    prerequisites: ["Interest in human-centered design", "Strong verbal & written communication", "No specific coding prerequisite required"],
+    skills: ["User interviews", "Usability testing", "Figma wireframing", "Survey design", "Qualitative analysis", "Accessibility (WCAG)"],
+    prerequisites: ["Curiosity about user behavior and human-centered design", "Strong listening & writing skills"],
     prerequisiteChecklist: [
       { id: "design_interest", label: "Interest in UX/UI design, Human-Centered Computing, or user psychology" },
       { id: "interview_comms", label: "Comfort conducting student interviews and usability tests" },
       { id: "open_majors", label: "Open to CS, Design, and Psychology students alike" }
     ],
-    bestFor: ["Students interested in Product Design / UX", "CS & Psychology double majors", "Students exploring non-coding tech paths"],
-    description: "Conduct user research for campus technology projects. Run interviews, usability tests, and synthesize qualitative findings to inform digital product decisions.",
+    bestFor: ["Students interested in Product Design & UX", "Creative problem solvers", "Cross-disciplinary students"],
+    description: "Conduct usability studies, interview student and faculty users, create wireframe prototypes in Figma, and help make campus software tools intuitive and accessible.",
     whatYouLearn: [
       "How to conduct generative interviews and moderated usability testing",
       "Qualitative synthesis methods (affinity mapping, persona creation)",
@@ -343,7 +344,7 @@ export const roles: Role[] = [
     whyGoodFit: "This role bridges technical and human sides of computing. You'll develop skills that complement programming and open doors to design-focused careers in a rapidly growing field with strong industry demand.",
     timeCommitment: "6-10 hours/week (project-based & flexible)",
     department: "ITS / Academic Technology / Faculty Research",
-    location: "Danforth Technology Building / Makerspace",
+    location: "CMIT Technology Building / Makerspace",
     contactPerson: "Director of Academic Technology & HCI Faculty",
     hiringCycle: "Early Fall and Mid-Spring semesters",
     handshakeQuery: "UX Research Assistant",

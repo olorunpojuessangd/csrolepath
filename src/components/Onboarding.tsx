@@ -1,64 +1,71 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
+import Navigation from './Navigation';
 
 export default function Onboarding() {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [answers, setAnswers] = useState({
-    year: '',
+    year: 'First-year',
     goals: [] as string[],
-    constraints: '',
+    constraints: 'none',
   });
 
   const handleYearSelect = (year: string) => {
-    setAnswers({ ...answers, year });
+    setAnswers(prev => ({ ...prev, year }));
   };
 
   const handleGoalToggle = (goal: string) => {
-    const newGoals = answers.goals.includes(goal)
-      ? answers.goals.filter(g => g !== goal)
-      : [...answers.goals, goal];
-    setAnswers({ ...answers, goals: newGoals });
+    setAnswers(prev => {
+      const goals = prev.goals.includes(goal)
+        ? prev.goals.filter(g => g !== goal)
+        : [...prev.goals, goal];
+      return { ...prev, goals };
+    });
   };
 
   const handleConstraintSelect = (constraint: string) => {
-    setAnswers({ ...answers, constraints: constraint });
-  };
-
-  const handleFinish = () => {
-    // Store preferences in sessionStorage for use in other screens
-    sessionStorage.setItem('userPreferences', JSON.stringify(answers));
+    const updated = { ...answers, constraints: constraint };
+    setAnswers(updated);
+    // Directly finish and navigate to recommended roles
+    sessionStorage.setItem('userPreferences', JSON.stringify(updated));
     navigate('/explore');
   };
 
-  const canProceed = () => {
-    if (step === 1) return answers.year !== '';
-    if (step === 2) return answers.goals.length > 0;
-    if (step === 3) return answers.constraints !== '';
-    return false;
+  const handleFinish = () => {
+    const finalAnswers = {
+      ...answers,
+      constraints: answers.constraints || 'none',
+      goals: answers.goals.length > 0 ? answers.goals : ['explore'],
+      year: answers.year || 'First-year'
+    };
+    sessionStorage.setItem('userPreferences', JSON.stringify(finalAnswers));
+    navigate('/explore');
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/70 pb-20">
-      <div className="max-w-3xl mx-auto px-6 sm:px-8 py-12">
+    <div className="min-h-screen bg-[#f8fafc] flex flex-col justify-between pb-24 sm:pb-12">
+      <Navigation />
+
+      <main className="max-w-2xl mx-auto px-6 sm:px-8 py-10 w-full flex-1">
         {/* Header */}
-        <div className="mb-8 text-center sm:text-left">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight mb-2">
+        <div className="mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight mb-2">
             Let's personalize your pathway
           </h1>
-          <p className="text-gray-600 text-base leading-relaxed">
+          <p className="text-slate-600 text-sm leading-relaxed">
             Answer 3 quick questions so we can prioritize the most relevant CS and IT labor roles for your schedule and goals.
           </p>
         </div>
 
         {/* Progress Indicator */}
-        <div className="mb-10">
-          <div className="flex items-center justify-between mb-2.5">
-            <span className="text-xs uppercase font-bold text-gray-500 tracking-wider">Step {step} of 3</span>
-            <span className="text-xs font-semibold text-blue-600">{Math.round((step / 3) * 100)}% Completed</span>
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Step {step} of 3</span>
+            <span className="text-xs font-bold text-blue-600">{Math.round((step / 3) * 100)}% Completed</span>
           </div>
-          <div className="h-2.5 bg-gray-200 rounded-full overflow-hidden">
+          <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
             <div 
               className="h-full bg-blue-600 transition-all duration-300"
               style={{ width: `${(step / 3) * 100}%` }}
@@ -66,33 +73,34 @@ export default function Onboarding() {
           </div>
         </div>
 
-        {/* Question Cards */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-200 p-8 sm:p-10 mb-8">
+        {/* Question Content */}
+        <div className="bg-white rounded-2xl shadow-2xs border border-slate-200/80 p-6 sm:p-8 mb-8">
           {step === 1 && (
             <div>
-              <h2 className="text-2xl font-bold mb-2 text-gray-900">What academic year are you currently in?</h2>
-              <p className="text-gray-600 text-sm mb-8 leading-relaxed">
+              <h2 className="text-xl font-bold mb-1.5 text-slate-900">What academic year are you currently in?</h2>
+              <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
                 This helps us highlight roles that match where you are in the Berea CS course progression.
               </p>
               
-              <div className="grid sm:grid-cols-2 gap-4">
-                {['First-year', 'Sophomore', 'Junior', 'Senior'].map((year) => (
+              <div className="grid sm:grid-cols-2 gap-3.5">
+                {[
+                  { year: 'First-year', desc: 'Beginning intro programming & exploring CS' },
+                  { year: 'Sophomore', desc: 'Taking core software design or data structures' },
+                  { year: 'Junior', desc: 'Targeting off-campus summer internships' },
+                  { year: 'Senior', desc: 'Preparing for post-grad roles & capstones' },
+                ].map(({ year, desc }) => (
                   <button
                     key={year}
+                    type="button"
                     onClick={() => handleYearSelect(year)}
-                    className={`p-6 rounded-2xl border-2 transition-all text-left flex flex-col justify-between ${
+                    className={`p-4 sm:p-5 rounded-xl border text-left flex flex-col justify-between transition-all active:scale-98 ${
                       answers.year === year
-                        ? 'border-blue-600 bg-blue-50/80 shadow-2xs'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50/50'
+                        ? 'border-blue-600 bg-blue-50/70 text-slate-900 shadow-2xs'
+                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/60 text-slate-700'
                     }`}
                   >
-                    <span className="text-lg font-bold text-gray-900">{year}</span>
-                    <span className="text-xs text-gray-500 mt-1">
-                      {year === 'First-year' && 'Beginning intro programming & exploring CS'}
-                      {year === 'Sophomore' && 'Taking core data structures & software design'}
-                      {year === 'Junior' && 'Targeting off-campus summer internships'}
-                      {year === 'Senior' && 'Preparing for post-grad roles & capstones'}
-                    </span>
+                    <span className="text-base font-bold text-slate-900">{year}</span>
+                    <span className="text-xs text-slate-500 mt-1 leading-relaxed">{desc}</span>
                   </button>
                 ))}
               </div>
@@ -101,43 +109,44 @@ export default function Onboarding() {
 
           {step === 2 && (
             <div>
-              <h2 className="text-2xl font-bold mb-2 text-gray-900">What are you hoping to get out of student labor?</h2>
-              <p className="text-gray-600 text-sm mb-8 leading-relaxed">
-                Select all that apply. This directly adjusts the badges and recommendations on the Explore page.
+              <h2 className="text-xl font-bold mb-1.5 text-slate-900">What are you hoping to get out of student labor?</h2>
+              <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
+                Select all that apply. This adjusts the match badges and recommendation scoring.
               </p>
               
-              <div className="space-y-3.5">
+              <div className="space-y-3">
                 {[
                   { id: 'explore', label: 'Just exploring—not sure what I want yet', desc: 'Discover a broad range of labor opportunities across CS & ITS' },
-                  { id: 'skills', label: 'Build specific technical skills', desc: 'Deepen skills in web development, SQL databases, or systems troubleshooting' },
-                  { id: 'internship', label: 'Prepare for software internships or industry jobs', desc: 'Gain resume experience, version control, and code review practice' },
-                  { id: 'grad', label: 'Explore grad school, teaching, or research paths', desc: 'Build close relationships with CS faculty and research labs' },
+                  { id: 'skills', label: 'Build specific technical skills', desc: 'Deepen skills in web development, SQL databases, or Linux systems' },
+                  { id: 'internship', label: 'Prepare for software internships or industry jobs', desc: 'Gain resume experience, version control, and team code review practice' },
+                  { id: 'grad', label: 'Explore grad school, teaching, or research paths', desc: 'Build close mentorship relationships with CS faculty and labs' },
                   { id: 'income', label: 'Flexible work that balances my course load', desc: 'Roles with manageable weekly hours and study-friendly shifts' },
                 ].map((goal) => (
                   <button
                     key={goal.id}
+                    type="button"
                     onClick={() => handleGoalToggle(goal.id)}
-                    className={`w-full text-left p-5 rounded-2xl border-2 transition-all ${
+                    className={`w-full text-left p-4 rounded-xl border transition-all active:scale-98 ${
                       answers.goals.includes(goal.id)
-                        ? 'border-blue-600 bg-blue-50/80 shadow-2xs'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50/50'
+                        ? 'border-blue-600 bg-blue-50/70 shadow-2xs'
+                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/60'
                     }`}
                   >
-                    <div className="flex items-start gap-4">
-                      <div className={`w-5 h-5 rounded-md border-2 mt-0.5 flex items-center justify-center flex-shrink-0 transition-colors ${
+                    <div className="flex items-start gap-3.5">
+                      <div className={`w-4 h-4 rounded mt-0.5 border flex items-center justify-center flex-shrink-0 transition-colors ${
                         answers.goals.includes(goal.id)
-                          ? 'border-blue-600 bg-blue-600'
-                          : 'border-gray-300'
+                          ? 'border-blue-600 bg-blue-600 text-white'
+                          : 'border-slate-300 bg-white'
                       }`}>
                         {answers.goals.includes(goal.id) && (
-                          <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                             <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                           </svg>
                         )}
                       </div>
                       <div>
-                        <div className="text-gray-900 font-bold text-base leading-snug">{goal.label}</div>
-                        <div className="text-xs text-gray-600 mt-1 leading-relaxed">{goal.desc}</div>
+                        <div className="text-slate-900 font-bold text-sm leading-snug">{goal.label}</div>
+                        <div className="text-xs text-slate-500 mt-0.5 leading-relaxed">{goal.desc}</div>
                       </div>
                     </div>
                   </button>
@@ -148,29 +157,30 @@ export default function Onboarding() {
 
           {step === 3 && (
             <div>
-              <h2 className="text-2xl font-bold mb-2 text-gray-900">Any timing or experience considerations?</h2>
-              <p className="text-gray-600 text-sm mb-8 leading-relaxed">
-                This helps us highlight roles with the right prerequisite level and weekly hour commitments.
+              <h2 className="text-xl font-bold mb-1.5 text-slate-900">Any timing or experience considerations?</h2>
+              <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
+                Click an option below to immediately view your tailored roles, or click the button below.
               </p>
               
-              <div className="space-y-3.5">
+              <div className="space-y-3">
                 {[
                   { id: 'none', label: 'No specific constraints', desc: "I'm flexible with scheduling and weekly commitment" },
                   { id: 'course-heavy', label: 'Taking a heavy course load this term', desc: 'Highlight positions with lighter hours (6–8 hrs/week)' },
-                  { id: 'first-job', label: 'This would be my first campus labor position', desc: 'Show roles with comprehensive onboarding and supportive peer mentors' },
-                  { id: 'limited-experience', label: 'Limited CS coursework so far', desc: 'Focus on roles with zero or minimal course prerequisites' },
+                  { id: 'first-job', label: 'This would be my first campus labor position', desc: 'Show roles with comprehensive onboarding and supportive mentors' },
+                  { id: 'limited-experience', label: 'Limited CS coursework so far', desc: 'Focus on roles with minimal or no course prerequisites' },
                 ].map((constraint) => (
                   <button
                     key={constraint.id}
+                    type="button"
                     onClick={() => handleConstraintSelect(constraint.id)}
-                    className={`w-full text-left p-5 rounded-2xl border-2 transition-all ${
+                    className={`w-full text-left p-4 rounded-xl border transition-all active:scale-98 ${
                       answers.constraints === constraint.id
-                        ? 'border-blue-600 bg-blue-50/80 shadow-2xs'
-                        : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50/50'
+                        ? 'border-blue-600 bg-blue-50/70 shadow-2xs'
+                        : 'border-slate-200 hover:border-slate-300 hover:bg-slate-50/60'
                     }`}
                   >
-                    <div className="text-gray-900 font-bold text-base mb-1">{constraint.label}</div>
-                    <div className="text-xs text-gray-600 leading-relaxed">{constraint.desc}</div>
+                    <div className="text-slate-900 font-bold text-sm mb-0.5">{constraint.label}</div>
+                    <div className="text-xs text-slate-500 leading-relaxed">{constraint.desc}</div>
                   </button>
                 ))}
               </div>
@@ -179,24 +189,19 @@ export default function Onboarding() {
         </div>
 
         {/* Navigation Actions */}
-        <div className="flex items-center justify-between pt-2">
+        <div className="flex items-center justify-between">
           <button
             onClick={() => step > 1 ? setStep(step - 1) : navigate('/')}
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors font-semibold text-sm px-4 py-2.5 rounded-xl hover:bg-gray-100/80"
+            className="flex items-center gap-1.5 text-slate-600 hover:text-slate-900 transition-colors font-medium text-xs sm:text-sm px-3.5 py-2 rounded-xl hover:bg-slate-200/60 active:scale-95"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>{step === 1 ? 'Back to Landing' : 'Previous Step'}</span>
+            <span>{step === 1 ? 'Back to Home' : 'Previous Step'}</span>
           </button>
 
           {step < 3 ? (
             <button
               onClick={() => setStep(step + 1)}
-              disabled={!canProceed()}
-              className={`flex items-center gap-2.5 px-7 py-3 rounded-xl font-bold text-sm transition-all ${
-                canProceed()
-                  ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
+              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-semibold text-xs sm:text-sm transition-all active:scale-95 shadow-xs"
             >
               <span>Next</span>
               <ArrowRight className="w-4 h-4" />
@@ -204,29 +209,24 @@ export default function Onboarding() {
           ) : (
             <button
               onClick={handleFinish}
-              disabled={!canProceed()}
-              className={`flex items-center gap-2.5 px-8 py-3 rounded-xl font-bold text-sm transition-all ${
-                canProceed()
-                  ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-sm hover:shadow'
-                  : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              }`}
+              className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white hover:bg-blue-700 rounded-xl font-bold text-xs sm:text-sm transition-all active:scale-95 shadow-xs"
             >
-              <span>Show My Recommended Roles</span>
+              <span>Show Recommended Roles</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           )}
         </div>
 
-        {/* Skip Option */}
-        <div className="text-center mt-8">
+        {/* Optional Skip */}
+        <div className="text-center mt-6">
           <button
             onClick={() => navigate('/explore')}
-            className="text-xs text-gray-500 underline hover:text-gray-800 font-medium"
+            className="text-xs text-slate-500 hover:text-slate-800 underline font-medium"
           >
-            Skip questionnaire and see all 8 roles
+            Skip questionnaire and view all roles
           </button>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
