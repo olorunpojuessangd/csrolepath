@@ -27,7 +27,7 @@ export function HomePage() {
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-zinc-950 dark:text-white leading-[1.12] mb-6">
               Demystifying CS &amp; IT <br />
-              <span className="bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_24px_rgba(59,130,246,0.25)]">
+              <span className="shimmer-text">
                 Student Labor Pathways
               </span>
             </h1>
