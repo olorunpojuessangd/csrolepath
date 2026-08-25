@@ -1,7 +1,6 @@
 import React from 'react';
 import { X, FileText, ExternalLink } from 'lucide-react';
 import { Role } from '../../types/role';
-import { LiquidButton, MetalButton } from '../ui/liquid-glass-button';
 
 interface ApplyModalProps {
   isOpen: boolean;
@@ -15,73 +14,91 @@ export function ApplyModal({ isOpen, onClose, role }: ApplyModalProps) {
   const handshakeUrl = `https://berea.joinhandshake.com/stu/postings?query=${encodeURIComponent(role.handshakeQuery)}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md transition-opacity">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      style={{
+        background: 'radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.18) 0%, rgba(99,102,241,0.12) 50%, rgba(0,0,0,0.55) 100%)',
+        backdropFilter: 'blur(8px)',
+      }}
+      onClick={onClose}
+    >
       <div
-        className="liquid-card bg-white/95 dark:bg-zinc-900/95 w-full max-w-lg rounded-3xl shadow-2xl border border-black/10 dark:border-white/15 overflow-hidden specular-highlight transition-all"
+        className="w-full max-w-lg rounded-3xl overflow-hidden relative"
+        style={{
+          background: 'linear-gradient(145deg, rgba(255,255,255,0.97) 0%, rgba(239,246,255,0.97) 100%)',
+          boxShadow: '0 0 0 1px rgba(59,130,246,0.2), 0 25px 60px rgba(0,0,0,0.18), 0 0 80px rgba(59,130,246,0.12)',
+        }}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div className="p-6 border-b border-black/5 dark:border-white/10 flex items-center justify-between">
+        {/* Colorful top gradient bar */}
+        <div className="h-1 w-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500" />
+
+        {/* Header */}
+        <div className="px-6 pt-5 pb-4 flex items-center justify-between border-b border-blue-100">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-xs">
-              <FileText className="w-4 h-4" />
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-500 text-white flex items-center justify-center shadow-lg shadow-blue-500/25">
+              <FileText className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-semibold text-zinc-900 dark:text-zinc-100 text-sm">How to Apply on Handshake</h3>
-              <span className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">{role.title}</span>
+              <h3 className="font-bold text-zinc-900 text-sm">How to Apply on Handshake</h3>
+              <span className="text-[11px] text-blue-600 font-mono font-semibold">{role.title}</span>
             </div>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 rounded-xl hover:bg-black/5 dark:hover:bg-white/10 transition-colors cursor-pointer"
+            className="p-1.5 text-zinc-400 hover:text-zinc-700 rounded-xl hover:bg-blue-50 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <div className="p-6 space-y-4 text-xs">
-          <div className="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-zinc-800 dark:text-zinc-200 shadow-inner">
-            <span className="font-semibold text-blue-600 dark:text-blue-400 block mb-1.5">Search Term on Handshake:</span>
-            <code className="px-2.5 py-1.5 rounded-xl bg-white/80 dark:bg-black/40 border border-black/5 dark:border-white/10 font-mono text-[11px] font-bold select-all inline-block text-zinc-900 dark:text-zinc-100">
+        {/* Body */}
+        <div className="p-6 space-y-4">
+          {/* Search term highlight */}
+          <div className="p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200">
+            <span className="font-semibold text-blue-700 block mb-1.5 text-xs">Search Term on Handshake:</span>
+            <code className="px-3 py-2 rounded-xl bg-white border border-blue-200 font-mono text-[12px] font-bold text-blue-900 inline-block shadow-sm select-all">
               {role.handshakeQuery}
             </code>
           </div>
 
-          <div className="space-y-3 text-zinc-600 dark:text-zinc-300">
-            <div className="flex items-start gap-3">
-              <span className="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-center font-mono font-bold text-[10px] leading-5 flex-shrink-0 border border-blue-500/20">1</span>
-              <span>Log in to your Berea Handshake student portal.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-center font-mono font-bold text-[10px] leading-5 flex-shrink-0 border border-blue-500/20">2</span>
-              <span>Search for <strong>"{role.handshakeQuery}"</strong> in on-campus labor postings.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-center font-mono font-bold text-[10px] leading-5 flex-shrink-0 border border-blue-500/20">3</span>
-              <span>Attach your updated labor resume listing completed CS/Math courses.</span>
-            </div>
-            <div className="flex items-start gap-3">
-              <span className="w-5 h-5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 text-center font-mono font-bold text-[10px] leading-5 flex-shrink-0 border border-blue-500/20">4</span>
-              <span>Contact the supervisor ({role.contactPerson}) early in the hiring cycle.</span>
-            </div>
+          {/* Steps */}
+          <div className="space-y-3">
+            {[
+              'Log in to your Berea Handshake student portal.',
+              <>Search for <strong>"{role.handshakeQuery}"</strong> in on-campus labor postings.</>,
+              'Attach your updated labor resume listing completed CS/Math courses.',
+              <>Contact the supervisor (<strong>{role.contactPerson}</strong>) early in the hiring cycle.</>,
+            ].map((step, i) => (
+              <div key={i} className="flex items-start gap-3 text-xs text-zinc-700">
+                <span className="w-6 h-6 flex-shrink-0 rounded-full bg-gradient-to-br from-blue-500 to-indigo-500 text-white flex items-center justify-center font-mono font-bold text-[10px] shadow-md shadow-blue-500/20">
+                  {i + 1}
+                </span>
+                <span className="leading-relaxed pt-0.5">{step}</span>
+              </div>
+            ))}
           </div>
         </div>
 
-        <div className="p-4 px-6 border-t border-black/5 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] flex items-center justify-end gap-3">
-          <LiquidButton
-            variant="ghost"
-            size="sm"
+        {/* Footer */}
+        <div className="px-6 pb-5 flex items-center justify-end gap-3">
+          <button
+            type="button"
             onClick={onClose}
+            className="px-4 py-2 text-xs font-medium text-zinc-500 hover:text-zinc-900 rounded-xl hover:bg-zinc-100 transition-colors cursor-pointer"
           >
             Close
-          </LiquidButton>
-          <MetalButton
-            variant="primary"
-            size="sm"
-            onClick={() => window.open(handshakeUrl, '_blank', 'noopener,noreferrer')}
+          </button>
+          <a
+            href={handshakeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:-translate-y-px active:translate-y-0"
           >
             <span>Open Handshake</span>
             <ExternalLink className="w-3.5 h-3.5" />
-          </MetalButton>
+          </a>
         </div>
       </div>
     </div>
