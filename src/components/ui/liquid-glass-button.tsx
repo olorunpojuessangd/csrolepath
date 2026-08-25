@@ -5,6 +5,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
+// GlassFilter kept for backward compatibility (unused in rendering)
 export function GlassFilter() {
   return (
     <svg
@@ -12,40 +13,11 @@ export function GlassFilter() {
       aria-hidden="true"
     >
       <defs>
-        <filter
-          id="container-glass"
-          x="-20%"
-          y="-20%"
-          width="140%"
-          height="140%"
-          colorInterpolationFilters="sRGB"
-        >
-          {/* Generate turbulent noise for distortion */}
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.05 0.05"
-            numOctaves="1"
-            seed="1"
-            result="turbulence"
-          />
-
-          {/* Blur the turbulence pattern slightly */}
+        <filter id="container-glass" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
+          <feTurbulence type="fractalNoise" baseFrequency="0.05 0.05" numOctaves="1" seed="1" result="turbulence" />
           <feGaussianBlur in="turbulence" stdDeviation="2" result="blurredNoise" />
-
-          {/* Displace the source graphic with the noise */}
-          <feDisplacementMap
-            in="SourceGraphic"
-            in2="blurredNoise"
-            scale="70"
-            xChannelSelector="R"
-            yChannelSelector="B"
-            result="displaced"
-          />
-
-          {/* Apply overall blur on the final result */}
+          <feDisplacementMap in="SourceGraphic" in2="blurredNoise" scale="70" xChannelSelector="R" yChannelSelector="B" result="displaced" />
           <feGaussianBlur in="displaced" stdDeviation="4" result="finalBlur" />
-
-          {/* Output the result */}
           <feComposite in="finalBlur" in2="finalBlur" operator="over" />
         </filter>
       </defs>
@@ -53,6 +25,7 @@ export function GlassFilter() {
   );
 }
 
+// ─── Base Button (shadcn pattern) ─────────────────────────────────────────────
 export const buttonVariants = cva(
   "inline-flex items-center cursor-pointer justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
@@ -65,7 +38,7 @@ export const buttonVariants = cva(
         cool:
           "bg-gradient-to-t from-blue-600 to-blue-500 text-white border border-b-2 border-blue-950/30 shadow-md shadow-blue-500/20 ring-1 ring-inset ring-white/25 hover:brightness-110 active:brightness-95 dark:border-blue-400/40 dark:ring-white/10 active:scale-[0.98]",
         outline:
-          "border border-black/10 dark:border-white/15 bg-white/70 dark:bg-zinc-850/70 hover:bg-white dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 backdrop-blur-md hover:border-blue-500/30",
+          "border border-black/10 dark:border-white/15 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:border-blue-500/30",
         secondary:
           "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700",
         ghost:
@@ -107,30 +80,31 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
+// ─── LiquidButton — clean modern style (less glass, more substance) ───────────
 export const liquidbuttonVariants = cva(
-  "inline-flex items-center transition-all justify-center cursor-pointer gap-2 whitespace-nowrap rounded-2xl text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50",
+  "inline-flex items-center transition-all justify-center cursor-pointer gap-2 whitespace-nowrap rounded-xl text-sm font-medium disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 active:scale-[0.97]",
   {
     variants: {
       variant: {
         default:
-          "bg-white/40 dark:bg-zinc-800/40 text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-[1.03] active:scale-[0.98] duration-200 border border-white/60 dark:border-white/10 backdrop-blur-xl",
+          "bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 border border-zinc-200 dark:border-zinc-700 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm duration-150",
         primary:
-          "bg-blue-600/90 text-white hover:bg-blue-500 hover:scale-[1.03] active:scale-[0.98] duration-200 border border-blue-400/40 shadow-[0_0_16px_rgba(59,130,246,0.3)] backdrop-blur-xl",
+          "bg-blue-600 text-white hover:bg-blue-500 border border-blue-700 dark:border-blue-500 shadow-md shadow-blue-500/20 hover:shadow-blue-500/30 duration-150",
         destructive:
-          "bg-rose-600/90 text-white hover:bg-rose-500 hover:scale-[1.03] active:scale-[0.98] duration-200 border border-rose-400/40 shadow-[0_0_16px_rgba(244,63,94,0.3)] backdrop-blur-xl",
+          "bg-rose-600 text-white hover:bg-rose-500 border border-rose-700 shadow-md shadow-rose-500/20 duration-150",
         outline:
-          "border border-black/10 dark:border-white/15 bg-white/30 dark:bg-black/30 hover:bg-white/60 dark:hover:bg-white/10 hover:scale-[1.03] active:scale-[0.98] text-zinc-900 dark:text-zinc-100 backdrop-blur-xl",
+          "border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 hover:border-blue-400 dark:hover:border-blue-600 text-zinc-900 dark:text-zinc-100 duration-150",
         secondary:
-          "bg-zinc-200/50 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200/80 dark:hover:bg-zinc-700/80 hover:scale-[1.03] active:scale-[0.98] backdrop-blur-xl",
+          "bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 duration-150",
         ghost:
-          "hover:bg-white/40 dark:hover:bg-white/10 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-[1.03] active:scale-[0.98] text-zinc-700 dark:text-zinc-300",
+          "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400 text-zinc-600 dark:text-zinc-300 duration-150",
         link: "text-blue-600 dark:text-blue-400 underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
-        sm: "h-8 text-xs gap-1.5 px-3.5 has-[>svg]:px-3 rounded-xl",
-        lg: "h-11 rounded-2xl px-6 has-[>svg]:px-4 text-sm font-semibold",
-        xl: "h-12 rounded-2xl px-8 has-[>svg]:px-6 text-base font-semibold",
+        sm: "h-8 text-xs gap-1.5 px-3.5 has-[>svg]:px-3 rounded-lg",
+        lg: "h-11 rounded-xl px-6 has-[>svg]:px-4 text-sm font-semibold",
+        xl: "h-12 rounded-xl px-8 has-[>svg]:px-6 text-base font-semibold",
         xxl: "h-14 rounded-2xl px-10 has-[>svg]:px-8 text-base font-semibold",
         icon: "h-9 w-9 rounded-xl",
       },
@@ -161,49 +135,21 @@ export const LiquidButton = React.forwardRef<HTMLButtonElement, LiquidButtonProp
     ref
   ) => {
     const Comp = asChild ? Slot : "button";
-
     return (
       <Comp
         ref={ref}
         data-slot="liquid-button"
-        className={cn(
-          "group relative isolate overflow-hidden select-none",
-          liquidbuttonVariants({ variant, size, className })
-        )}
+        className={cn(liquidbuttonVariants({ variant, size, className }))}
         {...props}
       >
-        {/* Specular Liquid Ambient Glow & Inset Reflections */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-0 rounded-[inherit] transition-all duration-300
-            shadow-[0_0_6px_rgba(0,0,0,0.03),0_2px_8px_rgba(0,0,0,0.06),inset_2px_2px_1px_-1px_rgba(255,255,255,0.9),inset_-2px_-2px_1px_-1px_rgba(0,0,0,0.08),inset_0_0_6px_rgba(0,0,0,0.04),0_0_12px_rgba(255,255,255,0.2)]
-            group-hover:shadow-[0_0_14px_rgba(59,130,246,0.25),0_4px_12px_rgba(0,0,0,0.08),inset_2px_2px_1px_-1px_rgba(255,255,255,1),inset_-2px_-2px_1px_-1px_rgba(0,0,0,0.12),inset_0_0_8px_rgba(59,130,246,0.15),0_0_16px_rgba(255,255,255,0.4)]
-            dark:shadow-[0_0_8px_rgba(0,0,0,0.4),0_2px_8px_rgba(0,0,0,0.5),inset_2px_2px_1px_-1px_rgba(255,255,255,0.25),inset_-2px_-2px_1px_-1px_rgba(0,0,0,0.7),inset_0_0_6px_rgba(255,255,255,0.08),0_0_12px_rgba(0,0,0,0.3)]
-            dark:group-hover:shadow-[0_0_16px_rgba(59,130,246,0.4),0_4px_16px_rgba(0,0,0,0.7),inset_2px_2px_1px_-1px_rgba(255,255,255,0.45),inset_-2px_-2px_1px_-1px_rgba(0,0,0,0.9),inset_0_0_10px_rgba(59,130,246,0.25),0_0_20px_rgba(59,130,246,0.2)]"
-        />
-
-        {/* Liquid Glass Distortion Layer — pure CSS backdrop-blur to avoid SVG filter compositing region overflow */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 -z-10 rounded-[inherit] overflow-hidden opacity-90 transition-opacity duration-300 group-hover:opacity-100 backdrop-blur-xl"
-        />
-
-        {/* Ambient illumination beam on hover */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -inset-full z-0 bg-gradient-to-tr from-transparent via-white/15 dark:via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-        />
-
-        {/* Interactive Content */}
-        <div className="relative z-10 flex items-center justify-center gap-2">
-          {children}
-        </div>
+        {children}
       </Comp>
     );
   }
 );
 LiquidButton.displayName = "LiquidButton";
 
+// ─── MetalButton — clean, modern CTA (no chrome bevel, solid + gradient) ─────
 export type ColorVariant =
   | "default"
   | "primary"
@@ -216,158 +162,83 @@ export interface MetalButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ColorVariant;
   size?: "sm" | "default" | "lg" | "xl";
+  disabled?: boolean;
 }
 
-const metalColorVariants: Record<
+const metaVariants: Record<
   ColorVariant,
-  {
-    outer: string;
-    inner: string;
-    button: string;
-    textColor: string;
-    textShadow: string;
-  }
+  { base: string; hover: string; shadow: string; text: string }
 > = {
   default: {
-    outer: "bg-gradient-to-b from-[#27272a] to-[#71717a] dark:from-[#3f3f46] dark:to-[#18181b]",
-    inner: "bg-gradient-to-b from-[#ffffff] via-[#e4e4e7] to-[#d4d4d8] dark:from-[#27272a] dark:via-[#18181b] dark:to-[#09090b]",
-    button: "bg-gradient-to-b from-[#f4f4f5] to-[#e4e4e7] dark:from-[#27272a] dark:to-[#18181b]",
-    textColor: "text-zinc-900 dark:text-zinc-100",
-    textShadow: "[text-shadow:_0_1px_1px_rgba(255,255,255,0.8)] dark:[text-shadow:_0_-1px_1px_rgba(0,0,0,0.8)]",
+    base: "bg-zinc-900 dark:bg-zinc-100",
+    hover: "hover:bg-zinc-700 dark:hover:bg-zinc-200",
+    shadow: "shadow-md shadow-zinc-900/20 dark:shadow-zinc-100/10",
+    text: "text-white dark:text-zinc-900",
   },
   primary: {
-    outer: "bg-gradient-to-b from-[#1e40af] to-[#60a5fa] dark:from-[#1e3a8a] dark:to-[#3b82f6]",
-    inner: "bg-gradient-to-b from-[#3b82f6] via-[#2563eb] to-[#1d4ed8]",
-    button: "bg-gradient-to-b from-[#3b82f6] to-[#1d4ed8]",
-    textColor: "text-white",
-    textShadow: "[text-shadow:_0_-1px_0_rgba(15,23,42,0.8)]",
+    base: "bg-blue-600",
+    hover: "hover:bg-blue-500",
+    shadow: "shadow-md shadow-blue-500/25",
+    text: "text-white",
   },
   success: {
-    outer: "bg-gradient-to-b from-[#005A43] to-[#7CCB9B]",
-    inner: "bg-gradient-to-b from-[#10b981] via-[#059669] to-[#047857]",
-    button: "bg-gradient-to-b from-[#10b981] to-[#047857]",
-    textColor: "text-white",
-    textShadow: "[text-shadow:_0_-1px_0_rgba(6,78,59,0.8)]",
+    base: "bg-emerald-600",
+    hover: "hover:bg-emerald-500",
+    shadow: "shadow-md shadow-emerald-500/25",
+    text: "text-white",
   },
   error: {
-    outer: "bg-gradient-to-b from-[#5A0000] to-[#FFAEB0]",
-    inner: "bg-gradient-to-b from-[#f43f5e] via-[#e11d48] to-[#be123c]",
-    button: "bg-gradient-to-b from-[#f43f5e] to-[#be123c]",
-    textColor: "text-white",
-    textShadow: "[text-shadow:_0_-1px_0_rgba(136,19,55,0.8)]",
+    base: "bg-rose-600",
+    hover: "hover:bg-rose-500",
+    shadow: "shadow-md shadow-rose-500/25",
+    text: "text-white",
   },
   gold: {
-    outer: "bg-gradient-to-b from-[#917100] to-[#EAD98F]",
-    inner: "bg-gradient-to-b from-[#f59e0b] via-[#d97706] to-[#b45309]",
-    button: "bg-gradient-to-b from-[#fbbf24] to-[#d97706]",
-    textColor: "text-amber-950 font-bold",
-    textShadow: "[text-shadow:_0_1px_1px_rgba(255,255,255,0.6)]",
+    base: "bg-amber-500",
+    hover: "hover:bg-amber-400",
+    shadow: "shadow-md shadow-amber-500/25",
+    text: "text-amber-950 font-bold",
   },
   bronze: {
-    outer: "bg-gradient-to-b from-[#864813] to-[#E9B486]",
-    inner: "bg-gradient-to-b from-[#b45309] via-[#92400e] to-[#78350f]",
-    button: "bg-gradient-to-b from-[#d97706] to-[#92400e]",
-    textColor: "text-white",
-    textShadow: "[text-shadow:_0_-1px_0_rgba(69,26,3,0.8)]",
+    base: "bg-orange-700",
+    hover: "hover:bg-orange-600",
+    shadow: "shadow-md shadow-orange-700/25",
+    text: "text-white",
   },
 };
 
-export const MetalButton = React.forwardRef<
-  HTMLButtonElement,
-  MetalButtonProps
->(({ children, className, variant = "primary", size = "default", ...props }, ref) => {
-  const [isPressed, setIsPressed] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false);
-  const [isTouchDevice, setIsTouchDevice] = React.useState(false);
+export const MetalButton = React.forwardRef<HTMLButtonElement, MetalButtonProps>(
+  ({ children, className, variant = "primary", size = "default", disabled, ...props }, ref) => {
+    const v = metaVariants[variant];
 
-  React.useEffect(() => {
-    setIsTouchDevice("ontouchstart" in window || navigator.maxTouchPoints > 0);
-  }, []);
+    const sizeClasses = {
+      sm: "h-8 px-3.5 text-xs rounded-lg gap-1.5",
+      default: "h-10 px-5 text-sm rounded-xl gap-2",
+      lg: "h-11 px-7 text-sm font-semibold rounded-xl gap-2",
+      xl: "h-12 px-8 text-base font-semibold rounded-2xl gap-2.5",
+    }[size];
 
-  const colors = metalColorVariants[variant];
-  const transitionStyle = "all 200ms cubic-bezier(0.16, 1, 0.3, 1)";
-
-  const sizeClasses = {
-    sm: "h-8 px-3.5 text-xs rounded-lg",
-    default: "h-10 px-5 text-sm rounded-xl",
-    lg: "h-11 px-7 text-sm font-semibold rounded-2xl",
-    xl: "h-12 px-8 text-base font-semibold rounded-2xl",
-  }[size];
-
-  return (
-    <div
-      className={cn(
-        "relative inline-flex transform-gpu rounded-2xl p-[1.25px] select-none",
-        colors.outer
-      )}
-      style={{
-        transform: isPressed
-          ? "translateY(1.5px) scale(0.985)"
-          : isHovered && !isTouchDevice
-          ? "translateY(-1px) scale(1.01)"
-          : "translateY(0) scale(1)",
-        boxShadow: isPressed
-          ? "0 1px 2px rgba(0, 0, 0, 0.2)"
-          : isHovered && !isTouchDevice
-          ? "0 8px 20px rgba(37, 99, 235, 0.25), 0 2px 6px rgba(0, 0, 0, 0.1)"
-          : "0 3px 8px rgba(0, 0, 0, 0.12)",
-        transition: transitionStyle,
-      }}
-    >
-      <div
-        className={cn(
-          "absolute inset-[1px] transform-gpu rounded-[inherit]",
-          colors.inner
-        )}
-        style={{
-          transition: transitionStyle,
-          filter:
-            isHovered && !isPressed && !isTouchDevice
-              ? "brightness(1.08)"
-              : "none",
-        }}
-      />
+    return (
       <button
         ref={ref}
+        disabled={disabled}
         className={cn(
-          "relative z-10 m-[1px] inline-flex items-center justify-center gap-2 transform-gpu cursor-pointer overflow-hidden leading-none font-medium outline-none transition-all",
+          "inline-flex items-center justify-center font-medium cursor-pointer",
+          "transition-all duration-150 active:scale-[0.97]",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50",
+          "disabled:pointer-events-none disabled:opacity-50",
+          v.base,
+          v.hover,
+          v.shadow,
+          v.text,
           sizeClasses,
-          colors.button,
-          colors.textColor,
-          colors.textShadow,
           className
         )}
-        style={{
-          transition: transitionStyle,
-        }}
         {...props}
-        onMouseDown={() => setIsPressed(true)}
-        onMouseUp={() => setIsPressed(false)}
-        onMouseLeave={() => {
-          setIsPressed(false);
-          setIsHovered(false);
-        }}
-        onMouseEnter={() => {
-          if (!isTouchDevice) setIsHovered(true);
-        }}
-        onTouchStart={() => setIsPressed(true)}
-        onTouchEnd={() => setIsPressed(false)}
-        onTouchCancel={() => setIsPressed(false)}
       >
-        {/* Specular Shine Sweep on Press / Hover */}
-        <div
-          className={cn(
-            "pointer-events-none absolute inset-0 z-20 overflow-hidden transition-opacity duration-300",
-            isPressed || isHovered ? "opacity-30" : "opacity-0"
-          )}
-        >
-          <div className="absolute -inset-full bg-gradient-to-r from-transparent via-white to-transparent transform -skew-x-12 animate-pulse" />
-        </div>
-
         {children}
       </button>
-    </div>
-  );
-});
-
+    );
+  }
+);
 MetalButton.displayName = "MetalButton";
