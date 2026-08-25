@@ -1,32 +1,7 @@
-export interface PrereqCheckItem {
-  id: string;
-  label: string;
-  isCourse?: boolean;
-  courseCode?: string;
-}
+import { Role, PrereqCheckItem } from '../types/role';
 
-export interface Role {
-  id: string;
-  title: string;
-  category: string;
-  skills: string[];
-  prerequisites: string[];
-  prerequisiteChecklist: PrereqCheckItem[];
-  bestFor: string[];
-  description: string;
-  whatYouLearn: string[];
-  typicalBackground: string;
-  commonNextSteps: string[];
-  whyGoodFit: string;
-  timeCommitment: string;
-  department: string;
-  location: string;
-  contactPerson: string;
-  hiringCycle: string;
-  handshakeQuery: string;
-  internshipAlignment: string;
-  applicationMaterials: string[];
-}
+export type { Role, PrereqCheckItem };
+
 
 export const roles: Role[] = [
   {

@@ -1,29 +1,29 @@
-import { createBrowserRouter } from "react-router";
-import Landing from "./components/Landing";
-import Onboarding from "./components/Onboarding";
-import ExploreRoles from "./components/ExploreRoles";
-import RoleDetail from "./components/RoleDetail";
-import CompareRoles from "./components/CompareRoles";
+import { createBrowserRouter } from "react-router-dom";
+import { HomePage } from "./pages/HomePage";
+import { OnboardingPage } from "./pages/OnboardingPage";
+import { ExplorePage } from "./pages/ExplorePage";
+import { RoleDetailPage } from "./pages/RoleDetailPage";
+import { ComparePage } from "./pages/ComparePage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    Component: Landing,
+    Component: HomePage,
   },
   {
     path: "/onboarding",
-    Component: Onboarding,
+    Component: OnboardingPage,
   },
   {
     path: "/explore",
-    Component: ExploreRoles,
+    Component: ExplorePage,
   },
   {
     path: "/role/:id",
-    Component: RoleDetail,
+    Component: RoleDetailPage,
   },
   {
     path: "/compare",
-    Component: CompareRoles,
+    Component: ComparePage,
   },
 ]);
