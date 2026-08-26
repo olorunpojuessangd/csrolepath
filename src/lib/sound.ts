@@ -1,6 +1,9 @@
-// Film-style light switch synthesizer — Web Audio API, zero external assets
-// Modelled after mechanical wall switch physics: two-phase snap (contact + release)
+// Real light-switch sound — plays /public/light-switch.mp3 (Pixabay, royalty-free)
+// Falls back to a synthesized click if audio is blocked or the file fails to load.
+
 let audioCtx: AudioContext | null = null;
+let switchBuffer: AudioBuffer | null = null;
+let bufferLoadFailed = false;
 
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null;
@@ -16,66 +19,76 @@ function getAudioContext(): AudioContext | null {
   return audioCtx;
 }
 
-function playImpulse(ctx: AudioContext, startTime: number, freq: number, gain: number, duration: number) {
-  // White noise burst shaped into a sharp transient
-  const bufferSize = Math.floor(ctx.sampleRate * duration);
+async function loadSwitchBuffer(): Promise<AudioBuffer | null> {
+  if (switchBuffer) return switchBuffer;
+  if (bufferLoadFailed) return null;
+
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return null;
+
+    const response = await fetch('/light-switch.mp3');
+    if (!response.ok) throw new Error('fetch failed');
+
+    const arrayBuffer = await response.arrayBuffer();
+    switchBuffer = await ctx.decodeAudioData(arrayBuffer);
+    return switchBuffer;
+  } catch (e) {
+    bufferLoadFailed = true;
+    return null;
+  }
+}
+
+// Pre-load on first import so the sound is instant on first click
+loadSwitchBuffer();
+
+function playSynthFallback(ctx: AudioContext, toDark: boolean) {
+  // Simple transient click fallback
+  const bufferSize = Math.floor(ctx.sampleRate * 0.04);
   const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
   const data = buffer.getChannelData(0);
   for (let i = 0; i < bufferSize; i++) {
-    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.12));
+    data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.1));
   }
-
   const noise = ctx.createBufferSource();
   noise.buffer = buffer;
-
-  // Band-pass filter for mechanical click character
   const filter = ctx.createBiquadFilter();
   filter.type = 'bandpass';
-  filter.frequency.value = freq;
+  filter.frequency.value = toDark ? 900 : 1400;
   filter.Q.value = 0.8;
-
-  const gainNode = ctx.createGain();
-  gainNode.gain.setValueAtTime(gain, startTime);
-  gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0.4, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.04);
   noise.connect(filter);
-  filter.connect(gainNode);
-  gainNode.connect(ctx.destination);
-  noise.start(startTime);
-  noise.stop(startTime + duration + 0.005);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  noise.start();
+  noise.stop(ctx.currentTime + 0.045);
 }
 
-export function playSwitchClickSound(toDark: boolean) {
+export async function playSwitchClickSound(toDark: boolean) {
   try {
     const ctx = getAudioContext();
     if (!ctx) return;
 
-    const now = ctx.currentTime;
+    // Try to play the real MP3
+    const buffer = await loadSwitchBuffer();
+    if (buffer) {
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
 
-    // Phase 1: The snap/click — sharp transient when switch actuates
-    // Going dark = lower "thunk"; going light = higher "snap"
-    const clickFreq  = toDark ? 900 : 1400;
-    const clickGain  = toDark ? 0.45 : 0.55;
-    playImpulse(ctx, now, clickFreq, clickGain, 0.018);
+      // Slight gain to normalize volume
+      const gain = ctx.createGain();
+      gain.gain.value = 0.85;
 
-    // Phase 2: Body resonance — the plastic housing vibrates slightly after snap
-    const thunkFreq = toDark ? 320 : 480;
-    playImpulse(ctx, now + 0.016, thunkFreq, clickGain * 0.4, 0.035);
-
-    // Phase 3: Tiny high-frequency contact ring (film effect detail)
-    const osc = ctx.createOscillator();
-    const oscGain = ctx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(toDark ? 2800 : 3800, now + 0.01);
-    osc.frequency.exponentialRampToValueAtTime(toDark ? 1200 : 1600, now + 0.04);
-    oscGain.gain.setValueAtTime(0.06, now + 0.01);
-    oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
-    osc.connect(oscGain);
-    oscGain.connect(ctx.destination);
-    osc.start(now + 0.01);
-    osc.stop(now + 0.065);
-
+      source.connect(gain);
+      gain.connect(ctx.destination);
+      source.start(0);
+    } else {
+      // Fallback: synthesized click
+      playSynthFallback(ctx, toDark);
+    }
   } catch (e) {
-    // Graceful fallback if audio is blocked
+    // Silently ignore — audio is non-critical
   }
 }
