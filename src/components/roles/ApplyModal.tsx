@@ -1,6 +1,7 @@
 import React from 'react';
 import { X, FileText, ExternalLink } from 'lucide-react';
 import { Role } from '../../types/role';
+import { HoldToConfirmButton } from '../ui/HoldToConfirmButton';
 
 interface ApplyModalProps {
   isOpen: boolean;
@@ -90,15 +91,11 @@ export function ApplyModal({ isOpen, onClose, role }: ApplyModalProps) {
           >
             Close
           </button>
-          <a
-            href={handshakeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 shadow-lg shadow-blue-500/25 transition-all hover:shadow-blue-500/40 hover:-translate-y-px active:translate-y-0"
-          >
-            <span>Open Handshake</span>
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
+          <HoldToConfirmButton
+            label="Hold to Open Handshake"
+            confirmedLabel="Opening Handshake..."
+            onConfirm={() => window.open(handshakeUrl, '_blank', 'noopener,noreferrer')}
+          />
         </div>
       </div>
     </div>

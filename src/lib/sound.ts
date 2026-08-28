@@ -92,3 +92,14 @@ export async function playSwitchClickSound(toDark: boolean) {
     // Silently ignore — audio is non-critical
   }
 }
+
+export function playClickSound() {
+  try {
+    const ctx = getAudioContext();
+    if (!ctx) return;
+    playSynthFallback(ctx, false);
+  } catch (e) {
+    // Silently ignore
+  }
+}
+

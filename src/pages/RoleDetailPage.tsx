@@ -8,6 +8,7 @@ import { PrereqChecklist } from '../components/roles/PrereqChecklist';
 import { ApplyModal } from '../components/roles/ApplyModal';
 import { Badge } from '../components/common/Badge';
 import { LiquidButton, MetalButton, Button } from '../components/ui/liquid-glass-button';
+import { HoldToConfirmButton } from '../components/ui/HoldToConfirmButton';
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -235,15 +236,12 @@ export function RoleDetailPage() {
                 <ArrowRight className="w-3.5 h-3.5" />
               </Button>
 
-              <Button
-                variant="outline"
-                size="default"
-                onClick={() => window.open(handshakeUrl, '_blank', 'noopener,noreferrer')}
-                className="w-full text-xs"
-              >
-                <span>Handshake Search</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </Button>
+              <HoldToConfirmButton
+                label="Hold for Handshake Search"
+                confirmedLabel="Opening Handshake..."
+                onConfirm={() => window.open(handshakeUrl, '_blank', 'noopener,noreferrer')}
+                className="w-full"
+              />
 
               <Link
                 to={`/compare?roles=${role.id},software-dev-intern`}
