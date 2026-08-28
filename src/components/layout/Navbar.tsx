@@ -1,23 +1,65 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { ExternalLink, BookmarkCheck, Compass, GitCompare, BookOpen, Home, Menu, X } from 'lucide-react';
 import { AnimatedThemeToggle } from '../ui/AnimatedThemeToggle';
+import { BrandWordmark } from '../common/BrandWordmark';
 
 interface NavbarProps {
   savedCount?: number;
   onOpenSavedDrawer?: () => void;
 }
 
-const navLinkClass = ({ isActive }: { isActive: boolean }) =>
-  `relative px-3.5 py-1.5 text-xs sm:text-sm rounded-full transition-all duration-150 cursor-pointer outline-none select-none font-medium flex items-center gap-1.5 ${
-    isActive
-      ? 'text-blue-600 dark:text-blue-400 font-semibold bg-white dark:bg-zinc-800 shadow-sm border border-blue-500/20'
-      : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
-  }`;
-
 export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawer }) => {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Sliding pill indicator tracking
+  const navContainerRef = useRef<HTMLElement | null>(null);
+  const itemRefs = useRef<(HTMLElement | null)[]>([]);
+  const [indicator, setIndicator] = useState<{ left: number; width: number; opacity: number }>({
+    left: 0,
+    width: 0,
+    opacity: 0,
+  });
+
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
+  const navLinks = [
+    { to: '/', label: 'Home', icon: Home, end: true },
+    { to: '/explore', label: 'Explore Roles', icon: Compass },
+    { to: '/compare', label: 'Compare', icon: GitCompare },
+    {
+      to: 'https://sites.google.com/view/olorunpojuessangd335/final-blog-post',
+      label: 'Case Study',
+      icon: BookOpen,
+      isExternal: true,
+    },
+  ];
+
+  const getActiveIndex = () => {
+    if (location.pathname === '/') return 0;
+    if (location.pathname.startsWith('/explore') || location.pathname.startsWith('/role/')) return 1;
+    if (location.pathname.startsWith('/compare')) return 2;
+    return null;
+  };
+
+  const activeIdx = getActiveIndex();
+  const targetIdx = hoveredIdx !== null ? hoveredIdx : activeIdx;
+
+  useEffect(() => {
+    if (targetIdx !== null && itemRefs.current[targetIdx]) {
+      const el = itemRefs.current[targetIdx];
+      if (el) {
+        setIndicator({
+          left: el.offsetLeft,
+          width: el.offsetWidth,
+          opacity: 1,
+        });
+      }
+    } else {
+      setIndicator(prev => ({ ...prev, opacity: 0 }));
+    }
+  }, [targetIdx, location.pathname]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
@@ -28,7 +70,7 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
       className="sticky top-0 z-50 w-full border-b border-black/5 dark:border-white/10 bg-[rgba(250,250,250,0.97)] dark:bg-[rgba(9,9,11,0.98)] transition-colors duration-200"
       style={{ isolation: 'isolate' }}
     >
-      {/* Desktop: [brand LEFT] [nav CENTERED] [actions RIGHT] */}
+      {/* Desktop: [brand LEFT] [nav CENTERED with sliding pill] [actions RIGHT] */}
       <div className="w-full max-w-[1140px] mx-auto px-4 sm:px-6 h-16 hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-4">
 
         {/* LEFT: Text-only Wordmark Block */}
@@ -37,47 +79,70 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
             to="/"
             className="flex flex-col group cursor-pointer select-none"
           >
-            <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-white leading-none flex items-center">
-              <span>CS</span>
-              <span className="text-[#4F46E5] dark:text-indigo-400 animate-slash-blink font-bold mx-[0.5px]">/</span>
-              <span className="wordmark-typewriter">RolePath</span>
-            </span>
+            <BrandWordmark size="md" />
             <span className="text-[10px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium mt-1">
               Student Labor
             </span>
           </Link>
         </div>
 
-        {/* CENTER: Navigation pill */}
+        {/* CENTER: Navigation pill with sliding hover cursor */}
         <nav
-          className="flex items-center gap-0.5 p-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10"
+          ref={navContainerRef}
+          onMouseLeave={() => setHoveredIdx(null)}
+          className="relative flex items-center gap-0.5 p-1 rounded-full bg-black/[0.04] dark:bg-white/[0.06] border border-black/5 dark:border-white/10"
           aria-label="Main Navigation"
         >
-          <NavLink to="/" end className={navLinkClass}>
-            <Home className="w-3.5 h-3.5" />
-            <span>Home</span>
-          </NavLink>
+          {/* Smooth Sliding Pill Indicator */}
+          <div
+            className="absolute top-1 bottom-1 rounded-full bg-white dark:bg-zinc-800 shadow-sm border border-blue-500/20 transition-all duration-200 ease-out pointer-events-none"
+            style={{
+              transform: `translateX(${indicator.left}px)`,
+              width: `${indicator.width}px`,
+              opacity: indicator.opacity,
+            }}
+          />
 
-          <NavLink to="/explore" className={navLinkClass}>
-            <Compass className="w-3.5 h-3.5" />
-            <span>Explore Roles</span>
-          </NavLink>
+          {navLinks.map((item, idx) => {
+            const Icon = item.icon;
+            const isItemActive = idx === activeIdx;
 
-          <NavLink to="/compare" className={navLinkClass}>
-            <GitCompare className="w-3.5 h-3.5" />
-            <span>Compare</span>
-          </NavLink>
+            if (item.isExternal) {
+              return (
+                <a
+                  key={item.label}
+                  ref={(el) => { itemRefs.current[idx] = el; }}
+                  href={item.to}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onMouseEnter={() => setHoveredIdx(idx)}
+                  className="relative z-10 px-3.5 py-1.5 text-xs sm:text-sm rounded-full transition-colors duration-150 cursor-pointer outline-none select-none font-medium flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{item.label}</span>
+                  <ExternalLink className="w-3 h-3 opacity-50 ml-0.5" />
+                </a>
+              );
+            }
 
-          <a
-            href="https://sites.google.com/view/olorunpojuessangd335/final-blog-post"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="relative px-3.5 py-1.5 text-xs sm:text-sm rounded-full transition-all duration-150 cursor-pointer outline-none select-none font-medium flex items-center gap-1.5 text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white"
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Case Study</span>
-            <ExternalLink className="w-3 h-3 opacity-50 ml-0.5" />
-          </a>
+            return (
+              <NavLink
+                key={item.label}
+                ref={(el) => { itemRefs.current[idx] = el; }}
+                to={item.to}
+                end={item.end}
+                onMouseEnter={() => setHoveredIdx(idx)}
+                className={`relative z-10 px-3.5 py-1.5 text-xs sm:text-sm rounded-full transition-colors duration-150 cursor-pointer outline-none select-none font-medium flex items-center gap-1.5 ${
+                  isItemActive
+                    ? 'text-blue-600 dark:text-blue-400 font-semibold'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:text-zinc-950 dark:hover:text-white'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{item.label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
 
         {/* RIGHT: Saved + Theme toggle */}
@@ -100,11 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
       {/* Mobile: brand left, actions right */}
       <div className="md:hidden w-full max-w-[1140px] mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex flex-col group cursor-pointer select-none">
-          <span className="text-base font-bold tracking-tight text-zinc-950 dark:text-white leading-none flex items-center">
-            <span>CS</span>
-            <span className="text-[#4F46E5] dark:text-indigo-400 animate-slash-blink font-bold mx-[0.5px]">/</span>
-            <span className="wordmark-typewriter">RolePath</span>
-          </span>
+          <BrandWordmark size="sm" />
           <span className="text-[9px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium mt-0.5">
             Student Labor
           </span>
