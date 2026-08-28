@@ -19,6 +19,12 @@ export interface Role {
   commonNextSteps: string[];
   whyGoodFit: string;
   timeCommitment: string;
+  /** Whether this role can be held as a 5 hr/week secondary position
+   *  alongside a primary 10 hr/week contract. Only TA roles qualify. */
+  secondaryEligible: boolean;
+  /** Whether this role uses the 10–15 hr/week lead/senior contract structure
+   *  rather than the standard 10 hr/week contract. */
+  isLeadStructure?: boolean;
   department: string;
   location: string;
   contactPerson: string;
@@ -27,6 +33,7 @@ export interface Role {
   internshipAlignment: string;
   applicationMaterials: string[];
 }
+
 
 export interface UserPreferences {
   year: string;

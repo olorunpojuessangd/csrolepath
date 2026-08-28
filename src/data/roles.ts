@@ -32,7 +32,8 @@ export const roles: Role[] = [
       "Freelance Web Developer for local non-profits"
     ],
     whyGoodFit: "This role provides immediate visual feedback on your work, making it easier to build confidence. You'll build a portfolio of real projects while learning industry-standard tools. Faculty supervisors understand you're learning.",
-    timeCommitment: "8-10 hours/week",
+    timeCommitment: "10 hrs/week (standard contract)",
+    secondaryEligible: false,
     department: "Information Technology Services / Academic Departments",
     location: "CMIT Technology Building / Hutchins Library",
     contactPerson: "ITS Web Support Supervisor & CS Department Coordinator",
@@ -73,7 +74,8 @@ export const roles: Role[] = [
       "Technical Mentorship / Developer Advocate roles"
     ],
     whyGoodFit: "If you learn best by teaching, this solidifies your technical foundation while building leadership skills. You'll work closely with CS faculty who can write strong reference letters for internships and grad school.",
-    timeCommitment: "6-8 hours/week (flexible around class schedule)",
+    timeCommitment: "10 hrs/week (primary) · 5 hrs/week available as secondary",
+    secondaryEligible: true,
     department: "Computer Science Department",
     location: "CMIT Technology Building (CS Labs)",
     contactPerson: "CS Department Chair & Course Instructors",
@@ -114,7 +116,8 @@ export const roles: Role[] = [
       "Business Intelligence & Quantitative Analyst roles"
     ],
     whyGoodFit: "This role shows you how CS connects to real-world domains. You'll develop critical thinking about data while building co-authored research papers or presentations. Faculty mentors write stellar grad school recommendations.",
-    timeCommitment: "8-12 hours/week (very flexible scheduling)",
+    timeCommitment: "10 hrs/week (standard contract)",
+    secondaryEligible: false,
     department: "Faculty Research Labs / Institutional Research",
     location: "CMIT Technology Building / Frost Building",
     contactPerson: "Faculty Principal Investigators & Institutional Research Director",
@@ -155,7 +158,8 @@ export const roles: Role[] = [
       "Network Operations / Cloud Infrastructure roles"
     ],
     whyGoodFit: "You'll quickly develop confidence by solving real problems daily. The work is varied, so you'll discover what aspects of technology interest you most. Builds essential soft skills that complement technical coursework.",
-    timeCommitment: "10-12 hours/week (includes some evening/weekend shifts)",
+    timeCommitment: "10 hrs/week (standard contract · shift-based scheduling)",
+    secondaryEligible: false,
     department: "Information Technology Services (ITS)",
     location: "Hutchins Library Helpdesk / Technology Resource Center",
     contactPerson: "ITS Helpdesk Manager",
@@ -195,7 +199,9 @@ export const roles: Role[] = [
       "Graduate programs in Computer Science"
     ],
     whyGoodFit: "This is the closest on-campus experience to industry software development. You'll build skills directly applicable to coding interviews and co-op positions with strong mentorship from senior developers.",
-    timeCommitment: "10-15 hours/week",
+    timeCommitment: "10–15 hrs/week (lead structure — primary only)",
+    secondaryEligible: false,
+    isLeadStructure: true,
     department: "ITS Software Engineering Team / Partner Organizations",
     location: "CMIT Technology Building / ITS Annex",
     contactPerson: "Director of Enterprise Applications & CS Faculty Mentor",
@@ -236,7 +242,8 @@ export const roles: Role[] = [
       "Teaching Assistant for Hardware / Architecture courses"
     ],
     whyGoodFit: "Provides hands-on physical computing experience without requiring heavy theoretical CS prerequisites. You get direct access to cutting-edge maker tools and faculty in CMIT.",
-    timeCommitment: "8-10 hours/week",
+    timeCommitment: "10 hrs/week (standard contract)",
+    secondaryEligible: false,
     department: "Computer Science Department",
     location: "CMIT Technology Building (Makerspace & Hardware Labs)",
     contactPerson: "CMIT Technology Lab Director",
@@ -276,7 +283,8 @@ export const roles: Role[] = [
       "Enterprise Systems Analyst"
     ],
     whyGoodFit: "Gives you exposure to how large organizations actually manage mission-critical data. A standout resume builder for students pursuing backend, cloud, or data engineering careers.",
-    timeCommitment: "10-12 hours/week",
+    timeCommitment: "10 hrs/week (standard contract)",
+    secondaryEligible: false,
     department: "ITS Enterprise Database & Infrastructure Team",
     location: "CMIT Technology Building / ITS Operations",
     contactPerson: "Lead Database Administrator & Infrastructure Manager",
@@ -317,7 +325,8 @@ export const roles: Role[] = [
       "Accessibility & Inclusive Design Specialist"
     ],
     whyGoodFit: "This role bridges technical and human sides of computing. You'll develop skills that complement programming and open doors to design-focused careers in a rapidly growing field with strong industry demand.",
-    timeCommitment: "6-10 hours/week (project-based & flexible)",
+    timeCommitment: "10 hrs/week (standard contract)",
+    secondaryEligible: false,
     department: "ITS / Academic Technology / Faculty Research",
     location: "CMIT Technology Building / Makerspace",
     contactPerson: "Director of Academic Technology & HCI Faculty",

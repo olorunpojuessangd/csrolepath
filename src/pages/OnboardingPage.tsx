@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, Check, Sparkles } from 'lucide-react';
 import { Navbar } from '../components/layout/Navbar';
 import { Footer } from '../components/layout/Footer';
-import { LiquidButton, MetalButton } from '../components/ui/liquid-glass-button';
+import { Button } from '../components/ui/liquid-glass-button';
 
 export function OnboardingPage() {
   const navigate = useNavigate();
@@ -214,9 +214,9 @@ export function OnboardingPage() {
 
                 <div className="space-y-3 pt-1">
                   {[
-                    { id: 'none', title: 'No specific constraints', desc: 'Show all roles matching my background and goals.' },
-                    { id: 'first-job', title: 'Looking for my first on-campus labor role', desc: 'Prioritize positions with comprehensive peer training and zero prerequisites.' },
-                    { id: 'light-hours', title: 'Prefer lighter hours (6-8 hrs/week)', desc: 'Prioritize positions that fit tightly alongside heavy STEM course loads.' },
+                    { id: 'none', title: 'No specific constraints', desc: 'Show all roles matching my background and goals. Standard contract is 10 hrs/week.' },
+                    { id: 'first-job', title: 'Looking for my first on-campus labor role', desc: 'Prioritize positions with comprehensive peer training and zero prerequisites. First-year students can hold one primary position (10 hrs/week).' },
+                    { id: 'secondary', title: 'Looking for a secondary position (5 hrs/week)', desc: 'Only the Teaching Assistant role is available as a 5 hr/week secondary alongside your primary 10 hr/week contract. Requires primary supervisor approval.' },
                   ].map(({ id, title, desc }) => {
                     const isSelected = answers.constraints === id;
                     return (
@@ -256,14 +256,14 @@ export function OnboardingPage() {
           {/* Controls */}
           <div className="flex items-center justify-between gap-4">
             {step > 1 ? (
-              <LiquidButton
+              <Button
                 variant="outline"
                 size="sm"
                 onClick={prevStep}
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
-              </LiquidButton>
+              </Button>
             ) : (
               <Link
                 to="/explore"
@@ -274,24 +274,24 @@ export function OnboardingPage() {
             )}
 
             {step < 3 ? (
-              <MetalButton
-                variant="primary"
+              <Button
+                variant="default"
                 size="default"
                 onClick={nextStep}
                 disabled={!canContinue()}
               >
                 <span>Continue</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </MetalButton>
+              </Button>
             ) : (
-              <MetalButton
-                variant="primary"
+              <Button
+                variant="default"
                 size="default"
                 onClick={handleFinish}
               >
                 <span>View Recommended Roles</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </MetalButton>
+              </Button>
             )}
           </div>
 
