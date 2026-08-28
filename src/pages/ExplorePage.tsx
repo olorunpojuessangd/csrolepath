@@ -156,6 +156,7 @@ export function ExplorePage() {
               <span className="text-zinc-700 dark:text-zinc-200">
                 <strong className="text-blue-600 dark:text-blue-400">Personalized for:</strong> {userPreferences.year}
                 {userPreferences.goals?.length > 0 && ` · ${userPreferences.goals.length} goal(s)`}
+                {userPreferences.interests?.length > 0 && ` · ${userPreferences.interests.length} track(s)`}
               </span>
               <Link to="/onboarding" className="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
                 Edit

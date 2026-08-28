@@ -38,6 +38,7 @@ export interface Role {
 export interface UserPreferences {
   year: string;
   goals: string[];
+  interests?: string[];
   constraints?: string;
 }
 

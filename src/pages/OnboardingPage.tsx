@@ -11,6 +11,7 @@ export function OnboardingPage() {
   const [answers, setAnswers] = useState({
     year: '',
     goals: [] as string[],
+    interests: [] as string[],
     constraints: 'none',
   });
 
@@ -18,6 +19,7 @@ export function OnboardingPage() {
   const canContinue = (): boolean => {
     if (step === 1) return answers.year !== '';
     if (step === 2) return answers.goals.length > 0;
+    if (step === 3) return answers.interests.length > 0;
     return true;
   };
 
@@ -34,18 +36,25 @@ export function OnboardingPage() {
     });
   };
 
+  const handleInterestToggle = (interest: string) => {
+    setAnswers(prev => {
+      const interests = prev.interests.includes(interest)
+        ? prev.interests.filter(i => i !== interest)
+        : [...prev.interests, interest];
+      return { ...prev, interests };
+    });
+  };
+
   const handleConstraintSelect = (constraint: string) => {
-    const updated = { ...answers, constraints: constraint };
-    setAnswers(updated);
-    sessionStorage.setItem('userPreferences', JSON.stringify(updated));
-    navigate('/explore');
+    setAnswers(prev => ({ ...prev, constraints: constraint }));
   };
 
   const handleFinish = () => {
     const finalAnswers = {
       ...answers,
       constraints: answers.constraints || 'none',
-      goals: answers.goals.length > 0 ? answers.goals : ['explore'],
+      goals: answers.goals.length > 0 ? answers.goals : ['internship'],
+      interests: answers.interests.length > 0 ? answers.interests : ['Development'],
       year: answers.year || 'First-year'
     };
     sessionStorage.setItem('userPreferences', JSON.stringify(finalAnswers));
@@ -53,7 +62,7 @@ export function OnboardingPage() {
   };
 
   const nextStep = () => {
-    setStep(s => Math.min(s + 1, 3));
+    setStep(s => Math.min(s + 1, 4));
   };
 
   const prevStep = () => {
@@ -77,20 +86,20 @@ export function OnboardingPage() {
               Personalize Your Pathway
             </h1>
             <p className="text-zinc-600 dark:text-zinc-300 text-xs sm:text-sm leading-relaxed">
-              Answer 3 quick questions to prioritize the most relevant CS and IT labor roles.
+              Answer 4 quick questions to prioritize the most relevant CS and IT labor roles.
             </p>
           </div>
 
           {/* Progress Indicator */}
           <div className="mb-6">
             <div className="flex items-center justify-between mb-2 text-xs font-mono text-zinc-500 dark:text-zinc-400 font-semibold">
-              <span>Step {step} of 3</span>
-              <span className="text-blue-600 dark:text-blue-400">{Math.round((step / 3) * 100)}%</span>
+              <span>Step {step} of 4</span>
+              <span className="text-blue-600 dark:text-blue-400">{Math.round((step / 4) * 100)}%</span>
             </div>
             <div className="h-2 bg-black/[0.04] dark:bg-white/[0.06] rounded-full overflow-hidden p-0.5 border border-black/5 dark:border-white/10 shadow-inner">
               <div 
                 className="h-full bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-500 dark:to-indigo-500 rounded-full shadow-[0_0_12px_rgba(59,130,246,0.5)] transition-all duration-300"
-                style={{ width: `${(step / 3) * 100}%` }}
+                style={{ width: `${(step / 4) * 100}%` }}
               />
             </div>
           </div>
@@ -205,6 +214,59 @@ export function OnboardingPage() {
               <div className="space-y-4 transition-all">
                 <div>
                   <h2 className="text-base sm:text-lg font-semibold text-zinc-950 dark:text-white mb-1">
+                    Which subject areas are you most interested in?
+                  </h2>
+                  <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
+                    Select all fields you would like to explore or work in.
+                  </p>
+                </div>
+
+                <div className="space-y-3 pt-1">
+                  {[
+                    { id: 'Development', title: 'Software & Web Engineering', desc: 'Frontend UI, full-stack applications, Git collaboration, and production codebases.' },
+                    { id: 'Research & Analysis', title: 'AI & Data Science', desc: 'Data cleaning, Python/R, quantitative models, and faculty research labs.' },
+                    { id: 'Support & Infrastructure', title: 'Systems, Hardware & IT', desc: 'Makerspace 3D printing, lab maintenance, device configuration, and helpdesk support.' },
+                    { id: 'Teaching & Mentoring', title: 'Teaching & Mentoring', desc: 'Peer tutoring, Teaching Assistant lab sessions, and helping peers debug code.' },
+                    { id: 'Design & Research', title: 'Design & UX Research', desc: 'User interviews, Figma prototypes, usability testing, and accessibility.' },
+                  ].map(({ id, title, desc }) => {
+                    const isSelected = answers.interests.includes(id);
+                    return (
+                      <button
+                        key={id}
+                        type="button"
+                        onClick={() => handleInterestToggle(id)}
+                        className={`w-full p-4 rounded-2xl border text-left flex items-start gap-3.5 transition-all duration-200 cursor-pointer active:scale-[0.985] ${
+                          isSelected
+                            ? 'bg-blue-50/90 dark:bg-blue-950/40 border-blue-500/80 ring-2 ring-blue-500/30 shadow-[0_0_16px_rgba(59,130,246,0.2)]'
+                            : 'bg-white/80 dark:bg-zinc-900/80 border-black/5 dark:border-white/10 hover:border-blue-500/30 hover:shadow-md'
+                        }`}
+                      >
+                        <div className="mt-0.5">
+                          <div className={`w-5 h-5 rounded-lg border flex items-center justify-center transition-colors ${
+                            isSelected ? 'bg-blue-600 border-blue-600 text-white shadow-xs' : 'border-zinc-400 bg-white/50 dark:bg-zinc-800/50'
+                          }`}>
+                            {isSelected && <Check className="w-3.5 h-3.5" />}
+                          </div>
+                        </div>
+                        <div>
+                          <span className={`text-xs sm:text-sm font-semibold block ${isSelected ? 'text-blue-600 dark:text-blue-400' : 'text-zinc-900 dark:text-zinc-100'}`}>
+                            {title}
+                          </span>
+                          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                            {desc}
+                          </p>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {step === 4 && (
+              <div className="space-y-4 transition-all">
+                <div>
+                  <h2 className="text-base sm:text-lg font-semibold text-zinc-950 dark:text-white mb-1">
                     Any specific considerations?
                   </h2>
                   <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
@@ -273,7 +335,7 @@ export function OnboardingPage() {
               </Link>
             )}
 
-            {step < 3 ? (
+            {step < 4 ? (
               <Button
                 variant="default"
                 size="default"

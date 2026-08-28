@@ -74,11 +74,14 @@ export function ComparePage() {
         scores[role.id] = Math.round(prereqRatio * 50);
       } else {
         // Onboarding completed: 60% weight on verified prereqs + 40% weight on profile match
-        let profileMatch = 0.5; // Base 50% profile fit if answered
+        let profileMatch = 0.4; // Base 40% profile fit if answered
         if (role.bestFor.some(bf => bf.toLowerCase().includes(prefs.year?.toLowerCase() || ''))) {
-          profileMatch += 0.3;
+          profileMatch += 0.2;
         }
         if (prefs.goals?.length > 0) {
+          profileMatch += 0.2;
+        }
+        if (prefs.interests?.includes(role.category)) {
           profileMatch += 0.2;
         }
         profileMatch = Math.min(profileMatch, 1.0);
@@ -143,30 +146,22 @@ export function ComparePage() {
             to="/explore"
             className="flex items-center gap-1.5 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors text-xs font-medium"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Back to Explore Roles</span>
           </Link>
-          
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => window.print()}
-              className="text-xs text-zinc-500 hover:text-zinc-900 dark:hover:text-white flex items-center gap-1.5 cursor-pointer font-medium"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Print Summary</span>
-            </button>
-            <Link
-              to="/explore"
-              className="text-xs text-blue-600 dark:text-blue-400 hover:underline font-semibold"
-            >
-              + Change roles
-            </Link>
-          </div>
+
+          <button
+            type="button"
+            onClick={() => window.print()}
+            className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-black/5 dark:border-white/10 text-xs font-medium text-zinc-600 dark:text-zinc-300 hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+          >
+            <Printer className="w-3.5 h-3.5 text-zinc-400" />
+            <span>Print Comparison</span>
+          </button>
         </div>
 
-        {/* Header */}
-        <div className="mb-8">
+        {/* Matrix Header Title */}
+        <div className="mb-6">
           <h1 className="text-3xl font-semibold tracking-tight text-zinc-950 dark:text-white">
             Compare Roles Side-by-Side
           </h1>
@@ -196,6 +191,7 @@ export function ComparePage() {
               <span className="text-zinc-600 dark:text-zinc-300">
                 <strong className="text-blue-600 dark:text-blue-400">Personalized profile active:</strong> {userPreferences.year}
                 {userPreferences.goals?.length > 0 && ` · ${userPreferences.goals.length} goal(s)`}
+                {userPreferences.interests?.length > 0 && ` · ${userPreferences.interests.length} track(s)`}
               </span>
               <Link to="/onboarding" className="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
                 Edit
