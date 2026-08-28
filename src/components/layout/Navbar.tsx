@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Sparkles, ExternalLink, BookmarkCheck, Compass, GitCompare, BookOpen, Home, Menu, X } from 'lucide-react';
+import { ExternalLink, BookmarkCheck, Compass, GitCompare, BookOpen, Home, Menu, X } from 'lucide-react';
 import { AnimatedThemeToggle } from '../ui/AnimatedThemeToggle';
 
 interface NavbarProps {
@@ -31,28 +31,20 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
       {/* Desktop: [brand LEFT] [nav CENTERED] [actions RIGHT] */}
       <div className="w-full max-w-[1140px] mx-auto px-4 sm:px-6 h-16 hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-4">
 
-        {/* LEFT: Brand Block */}
+        {/* LEFT: Text-only Wordmark Block */}
         <div className="flex items-center justify-start">
           <Link
             to="/"
-            className="flex items-center gap-2.5 group cursor-pointer select-none"
+            className="flex flex-col group cursor-pointer select-none"
           >
-            <div className="relative w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400 text-white flex items-center justify-center shadow-[0_2px_10px_rgba(37,99,235,0.35)] group-hover:scale-105 transition-transform duration-200">
-              <Sparkles className="w-4 h-4 text-white" />
-            </div>
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="font-semibold text-zinc-950 dark:text-zinc-100 text-sm tracking-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  CS RolePath
-                </span>
-                <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono font-semibold border border-blue-500/20">
-                  Berea
-                </span>
-              </div>
-              <span className="text-[10px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium">
-                Student Labor
-              </span>
-            </div>
+            <span className="text-lg font-bold tracking-tight text-zinc-950 dark:text-white leading-none flex items-center">
+              <span>CS</span>
+              <span className="text-[#4F46E5] dark:text-indigo-400 animate-slash-blink font-bold mx-[0.5px]">/</span>
+              <span className="wordmark-typewriter">RolePath</span>
+            </span>
+            <span className="text-[10px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium mt-1">
+              Student Labor
+            </span>
           </Link>
         </div>
 
@@ -107,14 +99,15 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
 
       {/* Mobile: brand left, actions right */}
       <div className="md:hidden w-full max-w-[1140px] mx-auto px-4 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 group cursor-pointer select-none">
-          <div className="relative w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-blue-500 dark:from-blue-500 dark:to-blue-400 text-white flex items-center justify-center shadow-[0_2px_10px_rgba(37,99,235,0.35)]">
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-zinc-950 dark:text-zinc-100 text-sm tracking-tight">CS RolePath</span>
-            <span className="text-[10px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium">Student Labor</span>
-          </div>
+        <Link to="/" className="flex flex-col group cursor-pointer select-none">
+          <span className="text-base font-bold tracking-tight text-zinc-950 dark:text-white leading-none flex items-center">
+            <span>CS</span>
+            <span className="text-[#4F46E5] dark:text-indigo-400 animate-slash-blink font-bold mx-[0.5px]">/</span>
+            <span className="wordmark-typewriter">RolePath</span>
+          </span>
+          <span className="text-[9px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium mt-0.5">
+            Student Labor
+          </span>
         </Link>
 
         <div className="flex items-center gap-2">
