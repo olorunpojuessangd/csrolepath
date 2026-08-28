@@ -162,7 +162,7 @@ export function OnboardingPage() {
 
                 <div className="space-y-3 pt-1">
                   {[
-                    { id: 'internship', title: 'Prepare for summer software engineering internships', desc: 'Gain production Git, code review, and full-stack development experience.' },
+                    { id: 'internship', title: 'Prepare for summer internships', desc: 'Build real-world experience — through development, data, research, design, or IT roles, depending on your track.' },
                     { id: 'deepen', title: 'Deepen core CS fundamentals & algorithms', desc: 'Reinforce theoretical concepts by teaching and peer mentoring.' },
                     { id: 'grad', title: 'Pursue academic research / graduate school', desc: 'Work with faculty on data analysis, research methodologies, and publications.' },
                     { id: 'breadth', title: 'Explore hardware, makerspace, or IT support', desc: 'Build hands-on diagnostic, 3D prototyping, and enterprise IT abilities.' },
