@@ -25,7 +25,7 @@ export function HomePage() {
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-zinc-950 dark:text-white leading-[1.12] mb-6">
+            <h1 className="text-[42px] sm:text-6xl md:text-7xl lg:text-[80px] font-semibold tracking-tight text-zinc-950 dark:text-white leading-[1.08] mb-8">
               Demystifying CS &amp; IT <br />
               <span className="shimmer-text">
                 Student Labor Pathways
