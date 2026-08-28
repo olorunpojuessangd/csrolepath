@@ -105,9 +105,9 @@ export function ExplorePage() {
       role.commonNextSteps.some(s => s.toLowerCase().includes('internship') || s.toLowerCase().includes('engineer'));
 
     const matchesHours = !onlyLightHours || 
-      role.timeCommitment.includes('6-8') || 
-      role.timeCommitment.includes('8-10') || 
-      role.timeCommitment.includes('6-10');
+      role.secondaryEligible || 
+      role.timeCommitment.includes('5 hrs') ||
+      !role.isLeadStructure;
 
     const matchesSaved = !onlySaved || savedRoleIds.includes(role.id);
 

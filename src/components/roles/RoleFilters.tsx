@@ -139,7 +139,7 @@ export function RoleFilters({
                 : 'bg-black/[0.02] dark:bg-white/[0.04] text-zinc-600 dark:text-zinc-300 border-black/5 dark:border-white/10 hover:border-blue-500/30'
             }`}
           >
-            Light Hours (6–10 hrs)
+            Secondary Eligible (5 hrs)
           </button>
 
           {savedCount > 0 && (

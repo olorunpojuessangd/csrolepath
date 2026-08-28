@@ -64,7 +64,7 @@ export function OnboardingPage() {
     <div className="min-h-screen bg-[#fafafa] dark:bg-[#09090b] text-zinc-900 dark:text-zinc-100 flex flex-col justify-between transition-colors duration-200">
       <Navbar />
 
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 py-12">
+      <main className="flex-1 min-h-[calc(100vh-4rem)] min-h-[calc(100dvh-4rem)] flex flex-col items-center justify-center p-4 sm:p-6 py-8 sm:py-12 overflow-y-auto">
         <div className="w-full max-w-[620px]">
           
           {/* Header */}
