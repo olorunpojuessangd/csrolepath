@@ -89,7 +89,7 @@ export function HomePage() {
                 </div>
                 <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Direct career pipelines</h3>
                 <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
-                  Every on-campus labor role bridges directly to industry skills: Git collaboration, database normalization, and full-stack engineering.
+                  Every on-campus labor role bridges directly to industry careers: software engineering, data analytics, product design, and IT systems.
                 </p>
               </div>
             </div>
@@ -123,7 +123,7 @@ export function HomePage() {
                   First-year students
                 </h3>
                 <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
-                  Discover campus roles welcoming beginners with zero prior CS coursework, like IT Support, CMIT Makerspace, and Web Dev.
+                  Discover campus roles welcoming beginners with zero prior CS coursework, like IT Support, CMIT Makerspace, and Student Software Developer.
                 </p>
               </div>
 
