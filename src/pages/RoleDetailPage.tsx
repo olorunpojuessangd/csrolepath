@@ -7,7 +7,7 @@ import { Footer } from '../components/layout/Footer';
 import { PrereqChecklist } from '../components/roles/PrereqChecklist';
 import { ApplyModal } from '../components/roles/ApplyModal';
 import { Badge } from '../components/common/Badge';
-import { LiquidButton, MetalButton } from '../components/ui/liquid-glass-button';
+import { LiquidButton, MetalButton, Button } from '../components/ui/liquid-glass-button';
 import { 
   ArrowLeft, 
   ArrowRight, 
@@ -147,7 +147,7 @@ export function RoleDetailPage() {
           </Link>
 
           <div className="flex items-center gap-2">
-            <LiquidButton
+            <Button
               variant="outline"
               size="sm"
               onClick={handleShare}
@@ -155,17 +155,17 @@ export function RoleDetailPage() {
             >
               {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Share2 className="w-3.5 h-3.5" />}
               <span className="hidden sm:inline">{copiedLink ? "Link Copied" : "Share"}</span>
-            </LiquidButton>
+            </Button>
 
-            <LiquidButton
-              variant={isSaved ? "primary" : "outline"}
+            <Button
+              variant={isSaved ? "default" : "outline"}
               size="sm"
               onClick={toggleSaveRole}
               className="text-xs"
             >
-              {isSaved ? <BookmarkCheck className="w-3.5 h-3.5 text-white" /> : <Bookmark className="w-3.5 h-3.5" />}
+              {isSaved ? <BookmarkCheck className="w-3.5 h-3.5" /> : <Bookmark className="w-3.5 h-3.5" />}
               <span>{isSaved ? "Saved" : "Save"}</span>
-            </LiquidButton>
+            </Button>
           </div>
         </div>
 
@@ -225,25 +225,25 @@ export function RoleDetailPage() {
 
             {/* CTAs */}
             <div className="flex flex-col gap-3 sm:min-w-[200px]">
-              <MetalButton
-                variant="primary"
-                size="default"
+              <Button
+                variant="default"
+                size="lg"
                 onClick={() => setIsApplyModalOpen(true)}
                 className="w-full"
               >
                 <span>How to Apply</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </MetalButton>
+              </Button>
 
-              <LiquidButton
+              <Button
                 variant="outline"
                 size="default"
                 onClick={() => window.open(handshakeUrl, '_blank', 'noopener,noreferrer')}
                 className="w-full text-xs"
               >
                 <span>Handshake Search</span>
-                <ExternalLink className="w-3.5 h-3.5 text-zinc-400" />
-              </LiquidButton>
+                <ExternalLink className="w-3.5 h-3.5" />
+              </Button>
 
               <Link
                 to={`/compare?roles=${role.id},software-dev-intern`}
