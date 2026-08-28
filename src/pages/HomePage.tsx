@@ -62,32 +62,32 @@ export function HomePage() {
               Why CS RolePath exists at Berea
             </h2>
 
-            <div className="grid sm:grid-cols-3 gap-6 text-sm">
-              <div className="space-y-2 p-3 rounded-2xl transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02]">
-                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono font-semibold text-xs border border-blue-500/20 shadow-xs">
+            <div className="grid sm:grid-cols-3 gap-6 sm:gap-8 text-sm">
+              <div className="p-3.5 sm:p-4 rounded-2xl transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02] flex flex-col">
+                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono font-semibold text-xs border border-blue-500/20 shadow-xs mb-4">
                   01
                 </div>
-                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">No guesswork</h3>
+                <h3 className="font-semibold text-zinc-950 dark:text-white mb-2">No guesswork</h3>
                 <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
                   Labor roles at Berea aren't always explained clearly. We make expectations, prerequisites, and hiring windows explicit.
                 </p>
               </div>
 
-              <div className="space-y-2 p-3 rounded-2xl transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02]">
-                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono font-semibold text-xs border border-blue-500/20 shadow-xs">
+              <div className="p-3.5 sm:p-4 rounded-2xl transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02] flex flex-col">
+                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono font-semibold text-xs border border-blue-500/20 shadow-xs mb-4">
                   02
                 </div>
-                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Zero gatekeeping</h3>
+                <h3 className="font-semibold text-zinc-950 dark:text-white mb-2">Zero gatekeeping</h3>
                 <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
                   First-year, international, and first-generation students have the exact same roadmap to build credentials without insider connections.
                 </p>
               </div>
 
-              <div className="space-y-2 p-3 rounded-2xl transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02]">
-                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono font-semibold text-xs border border-blue-500/20 shadow-xs">
+              <div className="p-3.5 sm:p-4 rounded-2xl transition-colors hover:bg-black/[0.02] dark:hover:bg-white/[0.02] flex flex-col">
+                <div className="w-8 h-8 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center font-mono font-semibold text-xs border border-blue-500/20 shadow-xs mb-4">
                   03
                 </div>
-                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">Direct career pipelines</h3>
+                <h3 className="font-semibold text-zinc-950 dark:text-white mb-2">Direct career pipelines</h3>
                 <p className="text-zinc-600 dark:text-zinc-300 text-xs leading-relaxed">
                   Every on-campus labor role bridges directly to industry careers: software engineering, data analytics, product design, and IT systems.
                 </p>
