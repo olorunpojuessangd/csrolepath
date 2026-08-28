@@ -71,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
       style={{ isolation: 'isolate' }}
     >
       {/* Desktop: [brand LEFT] [nav CENTERED with sliding pill] [actions RIGHT] */}
-      <div className="w-full max-w-[1140px] mx-auto px-4 sm:px-6 h-16 hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+      <div className="w-full px-6 sm:px-8 md:px-10 lg:px-12 h-16 hidden md:grid grid-cols-[1fr_auto_1fr] items-center gap-4">
 
         {/* LEFT: Text-only Wordmark Block */}
         <div className="flex items-center justify-start">
@@ -163,7 +163,7 @@ export const Navbar: React.FC<NavbarProps> = ({ savedCount = 0, onOpenSavedDrawe
       </div>
 
       {/* Mobile: brand left, actions right */}
-      <div className="md:hidden w-full max-w-[1140px] mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="md:hidden w-full px-4 sm:px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex flex-col group cursor-pointer select-none">
           <BrandWordmark size="sm" />
           <span className="text-[9px] text-zinc-400 dark:text-zinc-500 tracking-wider uppercase font-medium mt-0.5">
