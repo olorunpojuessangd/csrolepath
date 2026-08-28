@@ -80,19 +80,26 @@ export function RoleFilters({
       {/* SEARCH AND QUICK FILTER CHIPS */}
       <div className="liquid-card p-5 sm:p-6 rounded-3xl border border-black/5 dark:border-white/10 shadow-lg space-y-4">
         <div className="relative">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-zinc-400 w-4 h-4 pointer-events-none" />
           <input
             type="text"
             placeholder="Search by role title, skill (Python, SQL, Figma), or department..."
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
-            className="w-full pl-10 pr-10 py-3 bg-black/[0.02] dark:bg-white/[0.04] border border-black/5 dark:border-white/10 rounded-2xl text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-all shadow-inner"
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') onSearchChange('');
+            }}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            className="w-full pl-10 pr-10 py-3 bg-black/[0.02] dark:bg-white/[0.04] border border-black/5 dark:border-white/10 rounded-2xl text-xs sm:text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/50 transition-colors shadow-inner"
           />
           {searchTerm && (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="absolute right-3.5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              className="absolute right-3.5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors"
+              title="Clear search"
             >
               <X className="w-4 h-4" />
             </button>

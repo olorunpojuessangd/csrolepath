@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { roles } from '../data/roles';
 import { CareerTrackId } from '../types/role';
@@ -74,45 +74,49 @@ export function ExplorePage() {
 
   const compareUrl = `/compare?roles=${selectedForCompare.join(',')}`;
 
-  const filteredRoles = roles.filter(role => {
-    const matchesSearch = 
-      role.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      role.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      role.skills.some(skill => skill.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      role.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      role.handshakeQuery.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredRoles = useMemo(() => {
+    const cleanSearch = searchTerm.trim().toLowerCase();
 
-    let matchesTrack = true;
-    if (selectedTrack === 'swe') {
-      matchesTrack = role.id === 'software-dev-intern' || role.id === 'web-dev-assistant';
-    } else if (selectedTrack === 'ai-data') {
-      matchesTrack = role.id === 'data-assistant' || role.id === 'database-admin-assistant';
-    } else if (selectedTrack === 'systems') {
-      matchesTrack = role.id === 'it-support' || role.id === 'makerspace-lab-assistant' || role.id === 'database-admin-assistant';
-    } else if (selectedTrack === 'teaching') {
-      matchesTrack = role.id === 'teaching-assistant';
-    } else if (selectedTrack === 'ux') {
-      matchesTrack = role.id === 'ux-research-assistant' || role.id === 'web-dev-assistant';
-    }
+    return roles.filter(role => {
+      const matchesSearch = !cleanSearch ||
+        role.title.toLowerCase().includes(cleanSearch) ||
+        role.description.toLowerCase().includes(cleanSearch) ||
+        role.skills.some(skill => skill.toLowerCase().includes(cleanSearch)) ||
+        role.department.toLowerCase().includes(cleanSearch) ||
+        role.handshakeQuery.toLowerCase().includes(cleanSearch);
 
-    const matchesBeginner = !onlyBeginnerFriendly || 
-      role.bestFor.some(bf => bf.toLowerCase().includes('first-year') || bf.toLowerCase().includes('beginner')) ||
-      role.prerequisites.some(p => p.toLowerCase().includes('none') || p.toLowerCase().includes('open'));
+      let matchesTrack = true;
+      if (selectedTrack === 'swe') {
+        matchesTrack = role.id === 'software-dev-intern' || role.id === 'web-dev-assistant';
+      } else if (selectedTrack === 'ai-data') {
+        matchesTrack = role.id === 'data-assistant' || role.id === 'database-admin-assistant';
+      } else if (selectedTrack === 'systems') {
+        matchesTrack = role.id === 'it-support' || role.id === 'makerspace-lab-assistant' || role.id === 'database-admin-assistant';
+      } else if (selectedTrack === 'teaching') {
+        matchesTrack = role.id === 'teaching-assistant';
+      } else if (selectedTrack === 'ux') {
+        matchesTrack = role.id === 'ux-research-assistant' || role.id === 'web-dev-assistant';
+      }
 
-    const matchesInternship = !onlyInternshipAligned || 
-      role.category === 'Development' || 
-      role.category === 'Research & Analysis' || 
-      role.commonNextSteps.some(s => s.toLowerCase().includes('internship') || s.toLowerCase().includes('engineer'));
+      const matchesBeginner = !onlyBeginnerFriendly || 
+        role.bestFor.some(bf => bf.toLowerCase().includes('first-year') || bf.toLowerCase().includes('beginner')) ||
+        role.prerequisites.some(p => p.toLowerCase().includes('none') || p.toLowerCase().includes('open'));
 
-    const matchesHours = !onlyLightHours || 
-      role.secondaryEligible || 
-      role.timeCommitment.includes('5 hrs') ||
-      !role.isLeadStructure;
+      const matchesInternship = !onlyInternshipAligned || 
+        role.category === 'Development' || 
+        role.category === 'Research & Analysis' || 
+        role.commonNextSteps.some(s => s.toLowerCase().includes('internship') || s.toLowerCase().includes('engineer'));
 
-    const matchesSaved = !onlySaved || savedRoleIds.includes(role.id);
+      const matchesHours = !onlyLightHours || 
+        role.secondaryEligible || 
+        role.timeCommitment.includes('5 hrs') ||
+        !role.isLeadStructure;
 
-    return matchesSearch && matchesTrack && matchesBeginner && matchesInternship && matchesHours && matchesSaved;
-  });
+      const matchesSaved = !onlySaved || savedRoleIds.includes(role.id);
+
+      return matchesSearch && matchesTrack && matchesBeginner && matchesInternship && matchesHours && matchesSaved;
+    });
+  }, [searchTerm, selectedTrack, onlyBeginnerFriendly, onlyInternshipAligned, onlyLightHours, onlySaved, savedRoleIds]);
 
   const clearAllFilters = () => {
     setSearchTerm('');
