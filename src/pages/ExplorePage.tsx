@@ -74,10 +74,62 @@ export function ExplorePage() {
 
   const compareUrl = `/compare?roles=${selectedForCompare.join(',')}`;
 
+  const calculateRelevance = (role: typeof roles[0], prefs: any): { score: number; isTopMatch: boolean } => {
+    if (!prefs) return { score: 0, isTopMatch: false };
+    let score = 0;
+
+    // 1. Subject Area / Category Match (Step 3) - Heaviest weight (+50 pts)
+    if (prefs.interests && Array.isArray(prefs.interests) && prefs.interests.includes(role.category)) {
+      score += 50;
+    }
+
+    // 2. Academic Year / Progression Match (Step 1) (+30 pts)
+    const yearLower = (prefs.year || '').toLowerCase();
+    const isFirstYear = yearLower.includes('first-year');
+    const isUpperclass = yearLower.includes('junior') || yearLower.includes('senior');
+
+    if (role.bestFor.some(b => b.toLowerCase().includes(yearLower))) {
+      score += 30;
+    } else if (isFirstYear && (role.prerequisites.some(p => p.toLowerCase().includes('none') || p.toLowerCase().includes('open')) || role.bestFor.some(b => b.toLowerCase().includes('beginner')))) {
+      score += 30;
+    } else if (isUpperclass && (role.isLeadStructure || role.category === 'Development')) {
+      score += 20;
+    }
+
+    // 3. Goal Alignment (Step 2) (+25 pts)
+    const goals = prefs.goals || [];
+    if (goals.includes('internship') && (role.internshipAlignment || role.commonNextSteps.some(s => s.toLowerCase().includes('internship') || s.toLowerCase().includes('engineer')))) {
+      score += 25;
+    }
+    if (goals.includes('grad') && (role.category === 'Research & Analysis' || role.title.toLowerCase().includes('research'))) {
+      score += 25;
+    }
+    if (goals.includes('deepen') && role.category === 'Teaching & Mentoring') {
+      score += 25;
+    }
+    if (goals.includes('breadth') && (role.category === 'Support & Infrastructure' || role.title.toLowerCase().includes('makerspace'))) {
+      score += 25;
+    }
+
+    // 4. Constraint Alignment (Step 4) (+30 to +50 pts)
+    if (prefs.constraints === 'first-job' && (role.prerequisites.some(p => p.toLowerCase().includes('none') || p.toLowerCase().includes('open')) || role.bestFor.some(b => b.toLowerCase().includes('beginner')))) {
+      score += 30;
+    }
+    if (prefs.constraints === 'secondary' && role.secondaryEligible) {
+      score += 50;
+    }
+
+    // A role is deemed a "Top Match" if it has strong multi-dimensional alignment (score >= 65)
+    return {
+      score,
+      isTopMatch: score >= 65,
+    };
+  };
+
   const filteredRoles = useMemo(() => {
     const cleanSearch = searchTerm.trim().toLowerCase();
 
-    return roles.filter(role => {
+    const filtered = roles.filter(role => {
       const matchesSearch = !cleanSearch ||
         role.title.toLowerCase().includes(cleanSearch) ||
         role.description.toLowerCase().includes(cleanSearch) ||
@@ -116,7 +168,18 @@ export function ExplorePage() {
 
       return matchesSearch && matchesTrack && matchesBeginner && matchesInternship && matchesHours && matchesSaved;
     });
-  }, [searchTerm, selectedTrack, onlyBeginnerFriendly, onlyInternshipAligned, onlyLightHours, onlySaved, savedRoleIds]);
+
+    if (userPreferences) {
+      return filtered
+        .map(role => ({
+          role,
+          ...calculateRelevance(role, userPreferences),
+        }))
+        .sort((a, b) => b.score - a.score);
+    }
+
+    return filtered.map(role => ({ role, score: 0, isTopMatch: false }));
+  }, [searchTerm, selectedTrack, onlyBeginnerFriendly, onlyInternshipAligned, onlyLightHours, onlySaved, savedRoleIds, userPreferences]);
 
   const clearAllFilters = () => {
     setSearchTerm('');
@@ -225,11 +288,12 @@ export function ExplorePage() {
 
         {/* Role Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredRoles.map((role, idx) => (
+          {filteredRoles.map(({ role, isTopMatch }, idx) => (
             <RoleCard
               key={role.id}
               role={role}
               index={idx}
+              isTopMatch={isTopMatch}
               isSaved={savedRoleIds.includes(role.id)}
               isSelectedForCompare={selectedForCompare.includes(role.id)}
               onToggleSave={toggleSaveRole}

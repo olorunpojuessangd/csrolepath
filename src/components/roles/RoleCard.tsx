@@ -11,6 +11,7 @@ interface RoleCardProps {
   onToggleSave: (roleId: string, e: React.MouseEvent) => void;
   onToggleCompare: (roleId: string, e: React.MouseEvent) => void;
   index?: number;
+  isTopMatch?: boolean;
 }
 
 export function RoleCard({
@@ -19,6 +20,7 @@ export function RoleCard({
   isSelectedForCompare,
   onToggleSave,
   onToggleCompare,
+  isTopMatch = false,
 }: RoleCardProps) {
   const navigate = useNavigate();
   const isBeginner = role.bestFor.some(bf => 
@@ -29,6 +31,10 @@ export function RoleCard({
     <div
       onClick={() => navigate(`/role/${role.id}`)}
       className={`rounded-2xl border shadow-md hover:shadow-xl bg-neutral-50/90 dark:bg-neutral-900/90 border-white/80 dark:border-neutral-700/80 overflow-hidden transition-all duration-200 hover:scale-[1.02] active:scale-[0.99] cursor-pointer flex flex-col justify-between group relative backdrop-blur-xl ${
+        isTopMatch
+          ? 'ring-1 ring-blue-500/30 border-blue-500/30 dark:border-blue-400/30'
+          : ''
+      } ${
         isSelectedForCompare 
           ? 'ring-2 ring-blue-500 border-blue-500/80 shadow-[0_0_24px_rgba(59,130,246,0.25)]' 
           : 'hover:border-blue-500/40 dark:hover:border-blue-400/40'
@@ -42,9 +48,14 @@ export function RoleCard({
 
       <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
         <div>
-          {/* Card Header: Category & Action Buttons */}
+          {/* Card Header: Category, Top Match & Action Buttons */}
           <div className="flex items-center justify-between gap-2 mb-3.5">
             <div className="flex items-center gap-1.5 flex-wrap">
+              {isTopMatch && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xs">
+                  ★ Top Match
+                </span>
+              )}
               <Badge variant="default">{role.category}</Badge>
               {isBeginner && <Badge variant="success">Beginner Friendly</Badge>}
             </div>
