@@ -123,11 +123,11 @@ export function RoleCard({
         </div>
       </div>
 
-      {/* Bottom Action Strip */}
-      <div className="px-5 sm:px-6 py-2.5 bg-black/[0.02] dark:bg-white/[0.02] border-t border-black/5 dark:border-neutral-800 flex items-center justify-end text-xs font-medium text-blue-600 dark:text-blue-400 group-hover:bg-blue-500/[0.05] transition-colors">
-        <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+      {/* Full-Width Footer Strip */}
+      <div className="px-5 sm:px-6 py-3 bg-zinc-100/90 dark:bg-zinc-850/90 border-t border-zinc-200/80 dark:border-zinc-800/80 flex items-center justify-end group-hover:bg-blue-50/80 dark:group-hover:bg-blue-950/30 transition-colors">
+        <span className="inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-semibold text-zinc-800 dark:text-zinc-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
           <span>View Details</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <ArrowRight className="w-4 h-4 text-blue-600 dark:text-blue-400 transition-transform duration-200 group-hover:translate-x-1" />
         </span>
       </div>
     </div>
