@@ -23,28 +23,72 @@ export function ComparePage() {
   const roleIds = searchParams.get('roles')?.split(',').filter(Boolean) || [];
 
   const [readinessScores, setReadinessScores] = useState<Record<string, number>>({});
+  const [userPreferences, setUserPreferences] = useState<any>(null);
 
   const compareRoles = roleIds
     .map(id => roles.find(r => r.id === id))
     .filter(Boolean) as Role[];
 
   useEffect(() => {
+    // Load onboarding user preferences
+    let prefs: any = null;
+    const storedPrefs = sessionStorage.getItem('userPreferences');
+    if (storedPrefs) {
+      try {
+        prefs = JSON.parse(storedPrefs);
+        setUserPreferences(prefs);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     const scores: Record<string, number> = {};
     compareRoles.forEach(role => {
-      const stored = localStorage.getItem(`prereq_checks_${role.id}`);
-      if (stored) {
+      let checkedCount = 0;
+      const storedChecks = localStorage.getItem(`prereq_checks_${role.id}`);
+      if (storedChecks) {
         try {
-          const checked = JSON.parse(stored);
-          if (Array.isArray(checked) && role.prerequisiteChecklist.length > 0) {
-            scores[role.id] = Math.round((checked.length / role.prerequisiteChecklist.length) * 100);
+          const checked = JSON.parse(storedChecks);
+          if (Array.isArray(checked)) {
+            checkedCount = checked.length;
           }
         } catch (e) {
-          scores[role.id] = 0;
+          checkedCount = 0;
         }
-      } else {
+      }
+
+      // If the user has NOT answered any questions (no onboarding & no checklist items checked),
+      // readiness must strictly be 0%.
+      if (!prefs && checkedCount === 0) {
         scores[role.id] = 0;
+        return;
+      }
+
+      // Calculate prerequisite ratio (0 to 1)
+      const prereqRatio = role.prerequisiteChecklist.length > 0 
+        ? checkedCount / role.prerequisiteChecklist.length 
+        : 0;
+
+      if (!prefs) {
+        // No onboarding completed — readiness is strictly based on checked prereqs and capped at 50%
+        scores[role.id] = Math.round(prereqRatio * 50);
+      } else {
+        // Onboarding completed: 60% weight on verified prereqs + 40% weight on profile match
+        let profileMatch = 0.5; // Base 50% profile fit if answered
+        if (role.bestFor.some(bf => bf.toLowerCase().includes(prefs.year?.toLowerCase() || ''))) {
+          profileMatch += 0.3;
+        }
+        if (prefs.goals?.length > 0) {
+          profileMatch += 0.2;
+        }
+        profileMatch = Math.min(profileMatch, 1.0);
+
+        const totalScore = Math.round((prereqRatio * 60) + (profileMatch * 40));
+        // 100% is only achievable if all prereqs are verified AND onboarding is completed
+        scores[role.id] = prereqRatio === 1 && profileMatch === 1 ? 100 : Math.min(totalScore, 95);
       }
     });
+
     setReadinessScores(scores);
   }, [roleIds.join(',')]);
 
@@ -129,6 +173,35 @@ export function ComparePage() {
           <p className="text-zinc-600 dark:text-zinc-300 mt-1 text-sm">
             Evaluate time commitments, prerequisites, skills, and trajectories across {compareRoles.length} positions.
           </p>
+
+          {/* Unassessed / Personalization Context Banner */}
+          {!userPreferences ? (
+            <div className="mt-4 p-3.5 px-4 rounded-2xl liquid-card border border-blue-500/20 dark:border-blue-400/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs">
+              <div className="flex items-center gap-2.5">
+                <Sparkles className="w-4 h-4 text-blue-500 flex-shrink-0" />
+                <span className="text-zinc-700 dark:text-zinc-200">
+                  <strong className="text-blue-600 dark:text-blue-400">Readiness unassessed:</strong> You haven't answered any personalization questions yet. Complete onboarding for tailored readiness matching.
+                </span>
+              </div>
+              <Link
+                to="/onboarding"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 transition-colors whitespace-nowrap shadow-xs"
+              >
+                <span>Personalize Pathway</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-4 p-3 px-4 rounded-2xl bg-blue-500/[0.04] border border-blue-500/15 flex items-center justify-between text-xs">
+              <span className="text-zinc-600 dark:text-zinc-300">
+                <strong className="text-blue-600 dark:text-blue-400">Personalized profile active:</strong> {userPreferences.year}
+                {userPreferences.goals?.length > 0 && ` · ${userPreferences.goals.length} goal(s)`}
+              </span>
+              <Link to="/onboarding" className="text-blue-600 dark:text-blue-400 hover:underline font-semibold">
+                Edit
+              </Link>
+            </div>
+          )}
         </div>
 
         {/* Role Header Column Cards */}
@@ -166,7 +239,9 @@ export function ComparePage() {
                   <div className="p-3 rounded-2xl bg-black/[0.02] dark:bg-white/[0.04] border border-black/5 dark:border-white/10 mb-2 shadow-inner">
                     <div className="flex items-center justify-between text-[11px] mb-1.5">
                       <span className="text-zinc-500 dark:text-zinc-400 font-medium">Readiness</span>
-                      <span className="font-mono font-semibold text-blue-600 dark:text-blue-400">{readiness}%</span>
+                      <span className="font-mono font-semibold text-blue-600 dark:text-blue-400">
+                        {readiness > 0 ? `${readiness}%` : '0% (Unassessed)'}
+                      </span>
                     </div>
                     <div className="w-full h-1.5 bg-black/5 dark:bg-white/10 rounded-full overflow-hidden">
                       <div 
