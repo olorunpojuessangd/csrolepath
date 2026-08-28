@@ -329,23 +329,42 @@
   animation: terminal-slash-blink 1s steps(1) infinite !important;
 }
 
-/* ─── Wordmark typewriter effect for 'RolePath' on load ─────────────────────── */
-@keyframes typewriter-rolepath {
+/* ─── Wordmark full typewriter effect on initial page load ───────────────── */
+@keyframes wordmark-reveal {
   from {
-    width: 0;
+    max-width: 0;
+    opacity: 0;
   }
   to {
-    width: 8ch;
+    max-width: 14ch;
+    opacity: 1;
   }
 }
 
-.wordmark-typewriter {
-  display: inline-block;
+.animate-wordmark-load {
+  display: inline-flex;
   overflow: hidden;
   white-space: nowrap;
   vertical-align: bottom;
-  width: 8ch;
-  animation: typewriter-rolepath 0.75s steps(8, end) 0.25s 1 both;
+  animation: wordmark-reveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+
+/* ─── Letter hover ripple animation ───────────────────────────────────────── */
+@keyframes char-ripple {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-2.5px);
+    color: #4f46e5;
+  }
+  60% {
+    transform: translateY(1px);
+  }
+}
+
+.group:hover .animate-char-ripple {
+  animation: char-ripple 0.45s ease-in-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -353,11 +372,16 @@
     animation: none !important;
     opacity: 1 !important;
   }
-  .wordmark-typewriter {
+  .animate-wordmark-load {
     animation: none !important;
-    width: auto !important;
     max-width: none !important;
+    opacity: 1 !important;
+  }
+  .group:hover .animate-char-ripple {
+    animation: none !important;
+    transform: none !important;
   }
 }
+
 
 
