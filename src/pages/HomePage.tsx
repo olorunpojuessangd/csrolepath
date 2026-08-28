@@ -18,8 +18,8 @@ export function HomePage() {
             
             {/* Top Pill Chip — Centered */}
             <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full frosted-badge-accent text-xs font-mono font-medium shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-blue-500 animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/[0.03] dark:bg-white/[0.05] border border-black/5 dark:border-white/10 text-xs font-medium text-zinc-600 dark:text-zinc-300 shadow-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
                 <span>Berea College CS &amp; IT Labor Ecosystem</span>
               </div>
             </div>
@@ -52,7 +52,7 @@ export function HomePage() {
         </section>
 
         {/* 3 CORE PILLARS SECTION */}
-        <section className="max-w-[1120px] mx-auto px-6 mb-16">
+        <section className="max-w-[1120px] mx-auto px-6">
           <div className="liquid-card p-6 sm:p-8 rounded-3xl specular-highlight border border-black/5 dark:border-white/10 shadow-lg">
             <div className="flex items-center gap-2 text-xs font-mono font-medium text-blue-600 dark:text-blue-400 mb-2">
               <ShieldCheck className="w-4 h-4" />
@@ -96,13 +96,13 @@ export function HomePage() {
           </div>
         </section>
 
-        {/* 3 AUDIENCE CARDS SECTION */}
+        {/* 3 AUDIENCE CARDS SECTION (With Equidistant Spacing) */}
         <section className="max-w-[1120px] mx-auto px-6 mb-16">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight">
+          <div className="text-center py-14 sm:py-16">
+            <h2 className="text-2xl font-semibold text-zinc-950 dark:text-white tracking-tight">
               Designed for your stage of the journey
             </h2>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1.5">
               Find the right starting point based on where you are in your CS studies.
             </p>
           </div>

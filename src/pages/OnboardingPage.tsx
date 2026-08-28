@@ -69,8 +69,8 @@ export function OnboardingPage() {
           
           {/* Header */}
           <div className="mb-6 text-center sm:text-left">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full frosted-badge-accent text-xs font-mono font-medium mb-3 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-blue-500 dark:text-blue-400 animate-pulse" />
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/[0.03] dark:bg-white/[0.05] border border-black/5 dark:border-white/10 text-xs font-medium text-zinc-600 dark:text-zinc-300 mb-3 shadow-xs">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-500" />
               <span>Personalized Discovery</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-semibold text-zinc-950 dark:text-white tracking-tight mb-2">
