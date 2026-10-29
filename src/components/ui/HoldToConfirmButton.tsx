@@ -152,7 +152,7 @@ export function HoldToConfirmButton({
     (event: React.PointerEvent<HTMLButtonElement>) => {
       try {
         event.currentTarget.setPointerCapture(event.pointerId);
-      } catch {}
+      } catch { }
       startHold("pointer");
     },
     [startHold],
@@ -251,9 +251,9 @@ export function HoldToConfirmButton({
             shouldReduceMotion
               ? { duration: 0 }
               : {
-                  ...CHECK_POP_SPRING,
-                  delay: confirmed ? CHECK_DRAW_DELAY : 0,
-                }
+                ...CHECK_POP_SPRING,
+                delay: confirmed ? CHECK_DRAW_DELAY : 0,
+              }
           }
         >
           <svg
@@ -275,10 +275,10 @@ export function HoldToConfirmButton({
                   ? { duration: 0 }
                   : confirmed
                     ? {
-                        duration: CHECK_DRAW_DURATION,
-                        ease: EASE_OUT,
-                        delay: CHECK_DRAW_DELAY,
-                      }
+                      duration: CHECK_DRAW_DURATION,
+                      ease: EASE_OUT,
+                      delay: CHECK_DRAW_DELAY,
+                    }
                     : { duration: 0.1 }
               }
             />
@@ -342,9 +342,9 @@ export function HoldToConfirmButton({
               shouldReduceMotion
                 ? { duration: 0 }
                 : {
-                    ...SWAP_SPRING,
-                    delay: confirmed ? CHECK_DRAW_DELAY + LABEL_STAGGER : 0,
-                  }
+                  ...SWAP_SPRING,
+                  delay: confirmed ? CHECK_DRAW_DELAY + LABEL_STAGGER : 0,
+                }
             }
           >
             {confirmed ? confirmedLabel : label}
